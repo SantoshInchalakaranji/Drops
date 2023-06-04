@@ -4,6 +4,10 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
+    <style name="LargeText">
+        <item name="android:fontFamily">@font/segeo_bold</item>
+        <item name="android:textSize">26sp</item>
+    </style>
     <style name="TitleStyle">
         <item name="android:fontFamily">@font/segeo_bold</item>
         <item name="android:textSize">20sp</item>
@@ -11,6 +15,11 @@
     <style name="SubTitleStyle">
     <item name="android:fontFamily">@font/segeo_regular</item>
     <item name="android:textSize">16sp</item>
+    </style>
+    <style name="SubTitleStyleSemiBold">
+        <item name="android:fontFamily">@font/segeo_semi_bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/white_gradient</item>
     </style>
     <style name="RegularStyle">
         <item name="android:fontFamily">@font/segeo_regular</item>
