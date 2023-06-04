@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1054122764019",
+    "firebase_url": "https://drops-4f44a-default-rtdb.firebaseio.com",
+    "project_id": "drops-4f44a",
+    "storage_bucket": "drops-4f44a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1054122764019:android:8819142c8026dfaaac3986",
+        "android_client_info": {
+          "package_name": "com.prplmnstr.drops"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1054122764019-q1laj3v4i8smihqucdsntec5a8j1u85c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv9_z5J0AHoGwaQdU4rkGre2liCt49HWs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1054122764019-q1laj3v4i8smihqucdsntec5a8j1u85c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
