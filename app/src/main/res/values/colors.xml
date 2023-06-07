@@ -8,4 +8,9 @@
     <color name="gold">#FBB41A</color>
     <color name="background">#F9F9F9</color>
     <color name="white_gradient">#D4DFFF</color>
+    <color name="transparent">#00ffffff</color>
+    <color name="dark_gray">#A9A9A9</color>
+
+    <color name = "bottom_nav_bar_item_selected">#202020</color>
+    <color name = "bottom_nav_bar_item">#595959</color>
 </resources>

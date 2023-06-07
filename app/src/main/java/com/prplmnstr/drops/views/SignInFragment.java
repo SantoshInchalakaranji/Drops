@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.prplmnstr.drops.MainActivity;
 import com.prplmnstr.drops.R;
 import com.prplmnstr.drops.databinding.FragmentSignInBinding;
 import com.prplmnstr.drops.viewModel.AuthViewModel;
@@ -52,6 +53,11 @@ public class SignInFragment extends Fragment {
         binding.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                binding.loginBtn.setEnabled(false);
+                binding.loginBtn.setText("");
+                binding.loginProgress.setVisibility(View.VISIBLE);
+
+
                 String email = binding.emailET.getText().toString();
                 String password = binding.passwordET.getText().toString();
                 clickHandler.signInUser(email,password);
@@ -69,7 +75,7 @@ public class SignInFragment extends Fragment {
 
     }
 
-    public class ClickHandler{
+    private class ClickHandler{
         Context context;
         public ClickHandler(Context context){
             this.context = context;
@@ -77,9 +83,13 @@ public class SignInFragment extends Fragment {
         public void signInUser(String email,String password){
             if(email.isEmpty()){
                 binding.emailET.setError("Please enter E-mail address");
+                binding.loginBtn.setText("Login");
+                binding.loginBtn.setEnabled(true);
                 Toast.makeText(getActivity(), "Please enter E-mail address", Toast.LENGTH_SHORT).show();
             }else if(password.isEmpty()){
                 binding.passwordET.setError("Please enter password");
+                binding.loginBtn.setText("Login");
+                binding.loginBtn.setEnabled(true);
                 Toast.makeText(getActivity(), "Please enter password", Toast.LENGTH_SHORT).show();
             }else{
                  viewModel.signIn(email,password);
@@ -88,9 +98,15 @@ public class SignInFragment extends Fragment {
                         @Override
                         public void onChanged(FirebaseUser firebaseUser) {
                             if(firebaseUser!=null){
-
+                                ((MainActivity)getActivity()).checkForAdmin(firebaseUser);
                                 Toast.makeText(getActivity(), "Login successful", Toast.LENGTH_SHORT).show();
                                 navController.navigate(R.id.action_signInFragment_to_dashboardFragment);
+                            }
+                            else{
+                                binding.loginProgress.setVisibility(View.INVISIBLE);
+                                binding.loginBtn.setText("Login");
+                                binding.loginBtn.setEnabled(true);
+                                Toast.makeText(getActivity(), "Something went wrong please try again", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

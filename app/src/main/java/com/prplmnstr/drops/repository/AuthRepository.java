@@ -20,6 +20,7 @@ public class AuthRepository {
 
 
 
+
     public AuthRepository(Application application){
         this.application = application;
         firebaseAuth = FirebaseAuth.getInstance();
@@ -67,4 +68,6 @@ public class AuthRepository {
         });
 
     }
+
+
 }

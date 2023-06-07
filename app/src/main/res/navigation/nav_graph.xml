@@ -31,4 +31,24 @@
         android:name="com.prplmnstr.drops.views.DashboardFragment"
         android:label="fragment_dashboard"
         tools:layout="@layout/fragment_dashboard" />
+    <fragment
+        android:id="@+id/addUserFragment"
+        android:name="com.prplmnstr.drops.views.AddUserFragment"
+        android:label="fragment_add_user"
+        tools:layout="@layout/fragment_add_user" />
+    <fragment
+        android:id="@+id/outletDetailsFragment"
+        android:name="com.prplmnstr.drops.views.OutletDetailsFragment"
+        android:label="fragment_outlet_details"
+        tools:layout="@layout/fragment_outlet_details" />
+    <fragment
+        android:id="@+id/userDetailsFragment"
+        android:name="com.prplmnstr.drops.views.UserDetailsFragment"
+        android:label="fragment_user_details"
+        tools:layout="@layout/fragment_user_details" />
+    <fragment
+        android:id="@+id/uploadDataFragment"
+        android:name="com.prplmnstr.drops.views.UploadDataFragment"
+        android:label="fragment_upload_data"
+        tools:layout="@layout/fragment_upload_data" />
 </navigation>

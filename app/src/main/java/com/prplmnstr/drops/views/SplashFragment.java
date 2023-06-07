@@ -49,10 +49,14 @@ public class SplashFragment extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(viewModel.getCurrentUser()!= null){
-                    navController.navigate(R.id.action_splashFragment_to_dashboardFragment);
-                }else{
-                    navController.navigate(R.id.action_splashFragment_to_signInFragment);
+                try {
+                    if (viewModel.getCurrentUser() != null) {
+                        navController.navigate(R.id.action_splashFragment_to_dashboardFragment);
+                    } else {
+                        navController.navigate(R.id.action_splashFragment_to_signInFragment);
+                    }
+                }catch (Exception e){
+
                 }
 
             }

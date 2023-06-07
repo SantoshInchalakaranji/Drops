@@ -30,7 +30,7 @@
         android:textColor="@color/black"
         android:textSize="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/outletET" />
+        app:layout_constraintTop_toBottomOf="@+id/addLayout" />
 
     <EditText
         android:id="@+id/emailET"
@@ -65,25 +65,91 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/resisterTV" />
 
-    <EditText
-        android:id="@+id/outletET"
+
+    <TextView
+        android:id="@+id/addNewOutletTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/titillium_web_bold"
+        android:text="Add"
+        android:background="@drawable/no_bg_ripple"
+        android:clickable="true"
+        android:textColor="@color/blue"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resisterTV" />
+    <Spinner
+        android:id="@+id/spinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:background="@drawable/black_white_rect_bg"
-        android:ems="10"
-        android:fontFamily="@font/titillium_web_regular"
-        android:inputType="textPersonName"
-        android:textColor="@color/black"
-        android:textSize="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/outletTV" />
+        app:layout_constraintTop_toBottomOf="@+id/outletTV"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/addLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/spinner"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+            <TextView
+                android:id="@+id/newOutletTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+
+                android:fontFamily="@font/titillium_web_regular"
+                android:text="Enter new outlet"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <EditText
+                android:id="@+id/outletET"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/black_white_rect_bg"
+                android:ems="10"
+                android:hint="Ex: Chikodi"
+                android:fontFamily="@font/titillium_web_regular"
+                android:inputType="textPersonName"
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/newOutletTV" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/black_rect_bg"
+                android:text="Add"
+                android:textAllCaps="false"
+                android:textAppearance="@style/SubTitleStyle"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/black"
+                app:layout_constraintEnd_toEndOf="@+id/outletET"
+                app:layout_constraintStart_toStartOf="@+id/outletET"
+                app:layout_constraintTop_toBottomOf="@+id/outletET" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/passwordTV"
@@ -119,13 +185,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/emailET"
+        app:layout_constraintEnd_toEndOf="@+id/passwordET"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/emailET"
+        app:layout_constraintStart_toStartOf="@+id/passwordET"
         app:layout_constraintTop_toBottomOf="@+id/passwordET">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/login_btn"
+            android:id="@+id/uploadButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/black_rect_bg"
