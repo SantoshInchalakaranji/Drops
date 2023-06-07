@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    
+    <data>
+        <variable
+            name="RecyclerModel"
+            type="com.prplmnstr.drops.models.RecyclerModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:shapeAppearanceOverlay="@style/RoundedConrner"
+           app:imageResource ="@{RecyclerModel.imageIndex}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/outletTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+
+            android:text="@{RecyclerModel.outletName}"
+            android:textAppearance="@style/OutletName"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+        <TextView
+            android:id="@+id/collectionTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@{RecyclerModel.outletCollection}"
+            android:textAppearance="@style/OutletCollection"
+            app:layout_constraintStart_toStartOf="@+id/outletTV"
+            app:layout_constraintTop_toBottomOf="@+id/outletTV" />
+
+        <TextView
+            android:id="@+id/dateTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{RecyclerModel.date}"
+            android:textColor="#A0B8D3"
+            android:textSize="12sp"
+            android:textAppearance="@style/SubTitleStyleSemiBold"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
