@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.prplmnstr.drops.R;
 import com.prplmnstr.drops.databinding.DashboardListViewItemBinding;
 import com.prplmnstr.drops.models.RecyclerModel;
@@ -59,6 +60,16 @@ public class DashboardRecyclerAdapter extends RecyclerView.Adapter<DashboardRecy
                     }
                 }
             });
+
+            listViewItemBinding.dateTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int clickedPosition = getAdapterPosition();
+                    if (listener!= null && clickedPosition != RecyclerView.NO_POSITION){
+                        listener.onItemClick(recyclerItems.get(clickedPosition));
+                    }
+                }
+            });
         }
     }
 
@@ -69,7 +80,9 @@ public class DashboardRecyclerAdapter extends RecyclerView.Adapter<DashboardRecy
 
     public interface OnItemClickListener{
         void onItemClick(RecyclerModel recyclerModel);
+
     }
+
 
     public void setListener(OnItemClickListener listener){
         this.listener = listener;

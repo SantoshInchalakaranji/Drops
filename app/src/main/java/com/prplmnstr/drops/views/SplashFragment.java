@@ -51,7 +51,7 @@ public class SplashFragment extends Fragment {
             public void run() {
                 try {
                     if (viewModel.getCurrentUser() != null) {
-                        navController.navigate(R.id.action_splashFragment_to_dashboardFragment);
+                        navController.navigate(R.id.action_splashFragment_to_homeFragment);
                     } else {
                         navController.navigate(R.id.action_splashFragment_to_signInFragment);
                     }

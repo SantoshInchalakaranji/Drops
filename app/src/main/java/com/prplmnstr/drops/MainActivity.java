@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
-                if(navDestination.getId() == R.id.splashFragment || navDestination.getId() == R.id.signInFragment){
+                if(navDestination.getId() == R.id.splashFragment || navDestination.getId() == R.id.signInFragment
+                        || navDestination.getId() == R.id.homeFragment){
 
                     binding.navigationBar.setVisibility(View.GONE);
 

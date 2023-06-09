@@ -1,4 +1,4 @@
-package com.prplmnstr.drops.views;
+package com.prplmnstr.drops.views.admin;
 
 import android.app.Dialog;
 import android.content.res.Resources;

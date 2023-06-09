@@ -3,16 +3,13 @@
     <array name="images">
         <item>@drawable/store_1</item>
         <item>@drawable/store_2</item>
-        <item>@drawable/store_3</item>
-        <item>@drawable/greek_temple_1</item>
-        <item>@drawable/greek_temple_2</item>
-        <item>@drawable/greek_temple_3</item>
-        <item>@drawable/court_1</item>
-        <item>@drawable/court_2</item>
-        <item>@drawable/court_3</item>
-        <item>@drawable/museum_1</item>
-        <item>@drawable/museum_2</item>
-        <item>@drawable/museum_3</item>
+        <item>@drawable/vending_machine_1</item>
+        <item>@drawable/vending_machine_2</item>
+        <item>@drawable/water_truck_1</item>
+        <item>@drawable/water_truck_2</item>
+
+
+
 
     </array>
 
