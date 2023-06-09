@@ -7,11 +7,11 @@ import com.prplmnstr.drops.BR;
 
 public class Plant extends BaseObservable {
     String plantName;
-    String ImageUri;
+    String image;
 
-    public Plant(String plantName, String imageUri) {
+    public Plant(String plantName, String image) {
         this.plantName = plantName;
-        ImageUri = imageUri;
+        this.image = image;
     }
 
     public Plant() {
@@ -26,12 +26,12 @@ public class Plant extends BaseObservable {
         notifyPropertyChanged(BR.plantName);
     }
     @Bindable
-    public String getImageUri() {
-        return ImageUri;
+    public String getImage() {
+        return image;
     }
 
-    public void setImageUri(String imageUri) {
-        ImageUri = imageUri;
-        notifyPropertyChanged(BR.imageUri);
+    public void setImage(String image) {
+        this.image = image;
+        notifyPropertyChanged(BR.image);
     }
 }

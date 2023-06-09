@@ -1,7 +1,7 @@
 package com.prplmnstr.drops.adapters;
 
 import android.content.Context;
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
@@ -12,12 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.prplmnstr.drops.R;
-import com.prplmnstr.drops.databinding.DashboardListViewItemBinding;
 import com.prplmnstr.drops.databinding.PlantItemBinding;
 import com.prplmnstr.drops.models.Plant;
-import com.prplmnstr.drops.models.RecyclerModel;
+import com.prplmnstr.drops.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +40,11 @@ public class PlantsRecyclerAdapter extends RecyclerView.Adapter<PlantsRecyclerAd
     public void onBindViewHolder(@NonNull PlantsRecyclerAdapter.ViewHolder holder, int position) {
         Plant plant = plants.get(position);
         holder.plantItemBinding.setPlant(plant);
-        Glide.with(context)
-                .load(Uri.parse(plant.getImageUri()))
-                .into(holder.plantItemBinding.plantImage);
+//        Glide.with(context)
+//                .load(Uri.parse(plant.getImageUri()))
+//                .into(holder.plantItemBinding.plantImage);
+        Bitmap bitmap = Constants.stringToBitmap(plant.getImage());
+        holder.plantItemBinding.plantImage.setImageBitmap(bitmap);
     }
 
     @Override
