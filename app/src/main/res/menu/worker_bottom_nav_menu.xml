@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/workerTaskFragment"
+        android:icon="@drawable/baseline_add_task_24"
+        android:title="Tasks" />
+    <item
+        android:id="@+id/workerHomeFragment"
+        android:icon="@drawable/baseline_bar_chart_24"
+        android:title="Overview" />
+    <item
+        android:id="@+id/workerProfileFragment"
+        android:icon="@drawable/baseline_person_24"
+        android:title="Account" />
+</menu>
