@@ -100,7 +100,7 @@ public class SignInFragment extends Fragment {
                             if(firebaseUser!=null){
                                 ((MainActivity)getActivity()).checkForAdmin(firebaseUser);
                                 Toast.makeText(getActivity(), "Login successful", Toast.LENGTH_SHORT).show();
-                                navController.navigate(R.id.action_signInFragment_to_dashboardFragment);
+                                navController.navigate(R.id.action_splashFragment_to_homeFragment);
                             }
                             else{
                                 binding.loginProgress.setVisibility(View.INVISIBLE);

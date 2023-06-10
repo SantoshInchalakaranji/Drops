@@ -2,26 +2,34 @@ package com.prplmnstr.drops.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.prplmnstr.drops.R;
 import com.prplmnstr.drops.databinding.PlantItemBinding;
 import com.prplmnstr.drops.models.Plant;
 import com.prplmnstr.drops.utils.Constants;
+import com.prplmnstr.drops.views.admin.HomeFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlantsRecyclerAdapter extends RecyclerView.Adapter<PlantsRecyclerAdapter.ViewHolder> {
     Context context;
+    PopupMenu popupMenu;
+    ChangeImageLister changeImageLister;
     private List<Plant> plants = new ArrayList<>();
     @NonNull
     @Override
@@ -45,6 +53,7 @@ public class PlantsRecyclerAdapter extends RecyclerView.Adapter<PlantsRecyclerAd
 //                .into(holder.plantItemBinding.plantImage);
         Bitmap bitmap = Constants.stringToBitmap(plant.getImage());
         holder.plantItemBinding.plantImage.setImageBitmap(bitmap);
+        Log.i("TAG", "list size "+String.valueOf(plants.size())+ plant.getPlantName());
     }
 
     @Override
@@ -62,10 +71,27 @@ public class PlantsRecyclerAdapter extends RecyclerView.Adapter<PlantsRecyclerAd
             plantItemBinding.menuImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    PopupMenu popupMenu = new PopupMenu(context,view);
+                    popupMenu = new PopupMenu(context,view);
                     MenuInflater inflater = popupMenu.getMenuInflater();
                     inflater.inflate(R.menu.plant_popup_menu, popupMenu.getMenu());
                     popupMenu.show();
+
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            Plant newPlant = changeImageLister.changeImageRequest(plantItemBinding.getPlant());
+                            plantItemBinding.setPlant(newPlant);
+
+                            return true;
+                        }
+                    });
+                }
+            });
+
+            plantItemBinding.rootLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                   changeImageLister.plantItemClicked(plantItemBinding.getPlant().getPlantName());
                 }
             });
 
@@ -74,5 +100,14 @@ public class PlantsRecyclerAdapter extends RecyclerView.Adapter<PlantsRecyclerAd
     public void setPlants(List<Plant> plants) {
         this.plants = plants;
         notifyDataSetChanged();
+    }
+
+    public void setChangeImageListener(ChangeImageLister listener){
+        this.changeImageLister = listener;
+    }
+
+    public interface ChangeImageLister{
+        Plant changeImageRequest(Plant plant);
+        void plantItemClicked(String plantName);
     }
 }

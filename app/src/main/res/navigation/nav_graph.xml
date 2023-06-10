@@ -30,7 +30,11 @@
         android:id="@+id/dashboardFragment"
         android:name="com.prplmnstr.drops.views.admin.DashboardFragment"
         android:label="fragment_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <argument
+            android:name="plant"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/addUserFragment"
         android:name="com.prplmnstr.drops.views.admin.AddUserFragment"

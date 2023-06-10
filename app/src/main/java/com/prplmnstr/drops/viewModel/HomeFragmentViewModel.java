@@ -1,8 +1,12 @@
 package com.prplmnstr.drops.viewModel;
 
+import android.app.Application;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Base64;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -15,9 +19,25 @@ import java.util.List;
 public class HomeFragmentViewModel extends ViewModel implements HomeFragmentRepository.OnFirebaseRespond {
     private HomeFragmentRepository repository;
     private MutableLiveData<List<Plant>> plants ;
+    private MutableLiveData<Boolean> addingPlantResult;
+    private MutableLiveData<Boolean> updatingPlantResult;
+
     public HomeFragmentViewModel() {
        this.plants = new MutableLiveData<>();
+       this.addingPlantResult = new MutableLiveData<>();
+       this.updatingPlantResult = new MutableLiveData<>();
         this.repository = new HomeFragmentRepository(this);
+    }
+
+    public MutableLiveData<Boolean> addNewPlant(Plant plant){
+         repository.addNewPlant(plant);
+
+        return addingPlantResult;
+    }
+    public MutableLiveData<Boolean> updatePlant(Plant plant){
+         repository.updatePlant(plant);
+
+        return updatingPlantResult;
     }
 
     public MutableLiveData<List<Plant>> getPlants(){
@@ -35,6 +55,16 @@ public class HomeFragmentViewModel extends ViewModel implements HomeFragmentRepo
     @Override
     public void onPlantsLoadingSuccess(List<Plant> plants) {
         this.plants.setValue(plants);
+    }
+
+    @Override
+    public void onPlantAdded(Boolean result) {
+        this.addingPlantResult.setValue(result);
+    }
+
+    @Override
+    public void onPlantUpdated(Boolean result) {
+        this.updatingPlantResult.setValue(result);
     }
 
     @Override
