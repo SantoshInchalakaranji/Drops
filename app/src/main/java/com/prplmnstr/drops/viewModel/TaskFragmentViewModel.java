@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -29,6 +30,7 @@ public class TaskFragmentViewModel extends ViewModel implements TaskFragmentRepo
     private MutableLiveData<Integer> collection;
     private MutableLiveData<Integer> waterSupply;
     private MutableLiveData<Integer> taskCount;
+    private MutableLiveData<Boolean> result;
 
     public TaskFragmentViewModel() {
         this.repository = new TaskFragmentRepository(this);
@@ -37,9 +39,12 @@ public class TaskFragmentViewModel extends ViewModel implements TaskFragmentRepo
         collection = new MutableLiveData<>();
         waterSupply = new MutableLiveData<>();
         taskCount = new MutableLiveData<>();
+        result = new MutableLiveData<>();
 
 
     }
+
+
 
     public MutableLiveData<Integer> getTaskCount(){
         return taskCount;
@@ -51,14 +56,19 @@ public class TaskFragmentViewModel extends ViewModel implements TaskFragmentRepo
         return collection;
     }
 
-    public MutableLiveData<List<String>> getPlants(){
 
+    public MutableLiveData<List<String>> getPlants(){
+        repository.getPlants();
         return plants;
     }
-    public MutableLiveData<List<Record>> getRecords(){
-        repository.getPlants();
+    public MutableLiveData<List<Record>> getRecords(String plantName){
+
+        repository.getRecords(plantName);
+
         return records;
     }
+
+
     public List<RecyclerModel> getRecycleItems(List<Record> records,Resources resources, int checkmarkId) {
        int sum = 0;
        int waterSupply =0;
@@ -124,6 +134,11 @@ public class TaskFragmentViewModel extends ViewModel implements TaskFragmentRepo
         return list;
     }
 
+    public MutableLiveData<Boolean> addRecord(Record record){
+        repository.addRecord(record);
+        return result;
+    }
+
     @Override
     public void onPlantsLoaded(List<String> plants) {
         this.plants.setValue(plants);
@@ -132,8 +147,13 @@ public class TaskFragmentViewModel extends ViewModel implements TaskFragmentRepo
     @Override
     public void onTasksLoaded(List<Record> records) {
 
-
+        Log.i("RECCC", "onTasksLoaded: "+records.size());
         this.records.setValue(records);
+    }
+
+    @Override
+    public void onRecordAdded(Boolean result) {
+        this.result.setValue(result);
     }
 }
 

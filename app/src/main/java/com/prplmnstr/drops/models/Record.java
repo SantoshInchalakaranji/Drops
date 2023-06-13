@@ -107,6 +107,8 @@ public class Record extends BaseObservable {
         notifyPropertyChanged(BR.amount);
     }
 
+
+
     public void setWaterOpen(int waterOpen) {
         this.waterOpen = waterOpen;
         notifyPropertyChanged(BR.waterOpen);

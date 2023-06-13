@@ -56,7 +56,7 @@ public class DashboardRecyclerAdapter extends RecyclerView.Adapter<DashboardRecy
                 public void onClick(View view) {
                     int clickedPosition = getAdapterPosition();
                     if (listener!= null && clickedPosition != RecyclerView.NO_POSITION){
-                        listener.onItemClick(recyclerItems.get(clickedPosition));
+                        listener.onItemClick(recyclerItems.get(clickedPosition),clickedPosition);
                     }
                 }
             });
@@ -66,7 +66,7 @@ public class DashboardRecyclerAdapter extends RecyclerView.Adapter<DashboardRecy
                 public void onClick(View view) {
                     int clickedPosition = getAdapterPosition();
                     if (listener!= null && clickedPosition != RecyclerView.NO_POSITION){
-                        listener.onItemClick(recyclerItems.get(clickedPosition));
+                        listener.onItemClick(recyclerItems.get(clickedPosition),clickedPosition);
                     }
                 }
             });
@@ -79,7 +79,7 @@ public class DashboardRecyclerAdapter extends RecyclerView.Adapter<DashboardRecy
     }
 
     public interface OnItemClickListener{
-        void onItemClick(RecyclerModel recyclerModel);
+        void onItemClick(RecyclerModel recyclerModel,int clickPosition);
 
     }
 

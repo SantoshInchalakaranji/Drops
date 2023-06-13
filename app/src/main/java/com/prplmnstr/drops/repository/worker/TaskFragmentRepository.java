@@ -27,10 +27,14 @@ public class TaskFragmentRepository {
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     List<Unit> units  = new ArrayList<>();
-    List<Record> records  = new ArrayList<>();
+
 
     public TaskFragmentRepository(OnFirebaseRespond onFirebaseRespond) {
         this.onFirebaseRespond = onFirebaseRespond;
+    }
+
+    public void getRecords(String plantName){
+        loadUnits(plantName);
     }
 
 
@@ -59,7 +63,7 @@ public class TaskFragmentRepository {
                                 plants.add(fieldValue);
                             }
                             onFirebaseRespond.onPlantsLoaded(plants);
-                            loadUnits(plants.get(0));
+
 
                         } else {
                             onFirebaseRespond.onPlantsLoaded(null);
@@ -91,6 +95,7 @@ public class TaskFragmentRepository {
     }
 
     private void getTasks(List<Unit> units)  {
+        List<Record> records  = new ArrayList<>();
         Date today = Helper.getTodayDateObject();
         Log.i("TAG", "onComplete: "+String.valueOf(units.size()));
         for(Unit unit : units){
@@ -104,13 +109,15 @@ public class TaskFragmentRepository {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if(task.isSuccessful()){
+                               // records.clear();
                                 Log.i("TAG", "onComplete: "+task.isSuccessful());
                                 Record record = new Record();
                                 record = task.getResult().toObjects(Record.class).get(0);
                                 records.add(record);
-                                Log.i("TAG", "onComplete: "+record.getUnitName());
+                                Log.i("TAG", "onComplete: "+records.size()+"==="+units.size());
 
                                 if(records.size()== units.size()){
+                                    Log.i("SIZE", "onCompletefsdfsfffsf: "+record.getUnitName());
                                     onFirebaseRespond.onTasksLoaded(records);
                                 }
 
@@ -125,10 +132,53 @@ public class TaskFragmentRepository {
         }
     }
 
+    public void addRecord(Record record) {
+
+        Date date =  Helper.getTodayDateObject();
+
+        String recordDocumentName = record.getPlantName()+"_"+record.getUnitName()+"_"+date.getDateInStringFormat();
+        firebaseFirestore.collection(Constants.RECORDS)
+                .document(recordDocumentName)
+                .set(record).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            onFirebaseRespond.onRecordAdded(true);
+                        }else{
+                            onFirebaseRespond.onRecordAdded(false);
+                        }
+                    }
+                });
+    }
+
+//    private void updateRecord(Record record) {
+//
+//        Date date =  Helper.getTodayDateObject();
+//
+//        String recordDocumentName = record.getPlantName()+"_"+record.getUnitName()+"_"+date.getDateInStringFormat();
+//        firebaseFirestore.collection(Constants.RECORDS)
+//                .document(recordDocumentName)
+//                .update(record).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if(task.isSuccessful()){
+//                            onFirebaseRespond.onRecordAdded(true);
+//                        }else{
+//                            onFirebaseRespond.onRecordAdded(false);
+//                        }
+//                    }
+//                });
+//    }
+
+
     public interface OnFirebaseRespond {
         void onPlantsLoaded(List<String> plants);
 
         void onTasksLoaded(List<Record> records);
+
+        void onRecordAdded(Boolean result);
+
+
 
     }
 }
