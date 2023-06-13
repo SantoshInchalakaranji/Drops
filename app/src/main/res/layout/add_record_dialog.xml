@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialogContainer"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_margin="16dp"
+                    android:background="@color/white"
+                    android:padding="16dp">
+                    <TextView
+                        android:id="@+id/unitNameTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:textAppearance="@style/TitleStyle"
+                        android:text="Unit Name"
+                        android:textColor="@color/black"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_horizontal"
+                        >
+                        <TextView
+                            android:id="@+id/AmountTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+
+                            android:text="Amount(₹) : "
+                            android:textAppearance="@style/TitleStyle"
+                            android:textColor="@color/black"
+                            />
+
+                        <TextView
+                            android:id="@+id/totalAmountTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+
+                            android:text="0"
+                            android:textAppearance="@style/TitleStyle"
+                            android:textColor="@color/green"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp"
+
+                        >
+                        <TextView
+                            android:id="@+id/openingTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:textAppearance="@style/RegularStyle"
+                            android:text="Amount Opening Reading"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/openingET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/black_white_rect_bg"
+                        android:ems="10"
+
+                        android:fontFamily="@font/titillium_web_regular"
+                        android:inputType="number"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+
+                        android:layout_marginBottom="16dp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp"
+
+                        >
+                        <TextView
+                            android:id="@+id/closingTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:textAppearance="@style/RegularStyle"
+                            android:text="Amount Closing Reading"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/closingET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/black_white_rect_bg"
+                        android:ems="10"
+
+
+                        android:fontFamily="@font/titillium_web_regular"
+                        android:inputType="number"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+
+                        android:layout_marginBottom="16dp" />
+                    <LinearLayout
+                        android:id="@+id/wateLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="visible"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp"
+
+                            >
+                            <TextView
+                                android:id="@+id/waterOpeningTV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+                                android:textAppearance="@style/RegularStyle"
+                                android:text="Dispenser Opening Reading"
+                                android:textColor="@color/black"/>
+
+                        </LinearLayout>
+                        <EditText
+                            android:id="@+id/waterOpening"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/black_white_rect_bg"
+                            android:ems="10"
+                            android:visibility="visible"
+
+                            android:fontFamily="@font/titillium_web_regular"
+                            android:inputType="number"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+
+                            android:layout_marginBottom="16dp" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp"
+
+                            >
+                            <TextView
+                                android:id="@+id/waterCloseTV"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+                                android:textAppearance="@style/RegularStyle"
+                                android:text="Dispenser Closing Reading"
+                                android:textColor="@color/black"/>
+
+                        </LinearLayout>
+                        <EditText
+                            android:id="@+id/waterClosing"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/black_white_rect_bg"
+                            android:ems="10"
+                            android:visibility="visible"
+
+                            android:fontFamily="@font/titillium_web_regular"
+                            android:inputType="number"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+
+                            android:layout_marginBottom="16dp" />
+                    </LinearLayout>
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/dialog_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/black_rect_bg"
+                        android:text="+ Submit Record"
+                        android:onClick="@{ClickHandler::onSubmitButtonClick}"
+                        android:textAllCaps="false"
+                        android:textAppearance="@style/SubTitleStyle"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@color/black" />
+
+                </LinearLayout>
+            </ScrollView>
+
+    </LinearLayout>
