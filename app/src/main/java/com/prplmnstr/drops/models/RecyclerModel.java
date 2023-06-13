@@ -12,40 +12,43 @@ import com.prplmnstr.drops.R;
 
 
 public class RecyclerModel extends BaseObservable {
-   private String outletName;
-   private String outletCollection;
+   private String headerName;
+   private String subTitleName;
     private String date;
    private int imageIndex;
 
-    public RecyclerModel(String outletName, String outletCollection, String date, int imageIndex) {
-        this.outletName = outletName;
-        this.outletCollection = outletCollection;
+    public RecyclerModel(String headerName, String subTitleName, String date, int imageIndex) {
+        this.headerName = headerName;
+        this.subTitleName = subTitleName;
         this.date = date;
         this.imageIndex = imageIndex;
     }
+
+
 
     public RecyclerModel() {
 
     }
     @Bindable
-    public String getOutletName() {
-        return outletName;
+    public String getHeaderName() {
+        return headerName;
+
     }
 
-    public void setOutletName(String outletName) {
-        this.outletName = outletName;
-        notifyPropertyChanged(BR.outletName);
+    public void setHeaderName(String headerName) {
+        this.headerName = headerName;
+        notifyPropertyChanged(BR.headerName);
     }
     @Bindable
-    public String getOutletCollection() {
-        return outletCollection;
-
+    public String getSubTitleName() {
+        return subTitleName;
     }
 
-    public void setOutletCollection(String outletCollection) {
-        this.outletCollection = outletCollection;
-        notifyPropertyChanged(BR.outletCollection);
+    public void setSubTitleName(String subTitleName) {
+        this.subTitleName = subTitleName;
+        notifyPropertyChanged(BR.subTitleName);
     }
+
     @Bindable
     public String getDate() {
         return date;

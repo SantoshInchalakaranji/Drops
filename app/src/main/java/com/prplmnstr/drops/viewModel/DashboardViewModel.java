@@ -5,41 +5,45 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.prplmnstr.drops.models.Plant;
 import com.prplmnstr.drops.models.RecyclerModel;
 import com.prplmnstr.drops.repository.admin.DashboardFBRepository;
 
 import java.util.Calendar;
 import java.util.List;
 
-public class DashboardViewModel extends ViewModel implements DashboardFBRepository.onFirestoreTaskComplete{
+public class DashboardViewModel extends ViewModel implements DashboardFBRepository.OnFirebaseRespond{
 
-    private MutableLiveData<List<RecyclerModel>> recyclerLiveData = new MutableLiveData<>();
 
-    private DashboardFBRepository repository = new DashboardFBRepository(this);
 
-    public MutableLiveData<List<RecyclerModel>> getRecyclerItems() {
-        return recyclerLiveData;
-    }
+    private DashboardFBRepository repository;
 
+
+    private MutableLiveData<Boolean> result;
     public DashboardViewModel(){
+        repository = new DashboardFBRepository(this);
+        result = new MutableLiveData<>();
 
-        repository.getRecyclerItems();
     }
-    public int getProgress(){
-        Calendar calendar = Calendar.getInstance();
-        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
-        return hourOfDay;
+
+    public MutableLiveData<Boolean> addNewUnit(String plantName,String unitName,String type,int opening,int waterOpening){
+        repository.addNewUnit(plantName, unitName, type, opening, waterOpening);
+
+        return result;
+    }
+
+
+
+
+
+
+    @Override
+    public void onUnitAdded(Boolean result) {
+        this.result.setValue(result);
     }
 
     @Override
-    public void recyclerDataLoaded(List<RecyclerModel> recyclerModels) {
-        recyclerLiveData.setValue(recyclerModels);
-    }
+    public void onUnitUpdated(Boolean result) {
 
-
-
-    @Override
-    public void onError(Exception e) {
-        Log.d("ERROR", "onError: " + e.getMessage());
     }
 }

@@ -33,10 +33,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.prplmnstr.drops.R;
 
 import com.prplmnstr.drops.adapters.PlantsRecyclerAdapter;
@@ -45,6 +47,7 @@ import com.prplmnstr.drops.databinding.FragmentDashboardBinding;
 import com.prplmnstr.drops.databinding.FragmentHomeBinding;
 import com.prplmnstr.drops.models.Plant;
 import com.prplmnstr.drops.utils.Constants;
+import com.prplmnstr.drops.utils.Helper;
 import com.prplmnstr.drops.viewModel.AddUserViewModel;
 import com.prplmnstr.drops.viewModel.DashboardViewModel;
 import com.prplmnstr.drops.viewModel.HomeFragmentViewModel;
@@ -68,13 +71,19 @@ public class HomeFragment extends Fragment {
     private List<Plant> plants= new ArrayList<>();
     private OnActivityResultListener onActivityResultListener;
     private NavController navController;
+    private View view;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentHomeBinding.inflate(inflater,container,false);
-        View view = binding.getRoot();
+        if(view==null){
+            binding = FragmentHomeBinding.inflate(inflater,container,false);
+             view = binding.getRoot();
+
+        }
+
 
         return view;
 
@@ -119,8 +128,12 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void plantItemClicked(String plantName) {
+               // Toast.makeText(getActivity(), plantName, Toast.LENGTH_SHORT).show();
                 NavDirections action = HomeFragmentDirections.actionHomeFragmentToDashboardFragment(plantName);
-                navController.navigate(action);
+               navController.navigate(action);
+
+
+              //  navController.navigate(R.id.action_homeFragment_to_dashboardFragment);
 
             }
         });
@@ -227,7 +240,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                String plantName = addPlantDialogBinding.dialogEditText.getText().toString().trim();
-               if(!Constants.containsOnlyAlphabets(plantName) || plantName.isEmpty()){
+               if(!Helper.containsOnlyAlphabets(plantName) || plantName.isEmpty()){
                    addPlantDialogBinding.dialogEditText.setError("Plant name should contain only alphabets");
                }else{
                    loader.show();

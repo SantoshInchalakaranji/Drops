@@ -174,25 +174,18 @@
         android:layout_height="wrap_content"
 
         android:layout_marginStart="16dp"
-        android:visibility="gone"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:text="+ Add Plant"
         android:textAllCaps="false"
         android:textAppearance="@style/SubTitleStyle"
         android:textColor="@color/white"
-       app:shapeAppearanceOverlay="@drawable/black_rect_bg"
+        android:visibility="gone"
         app:backgroundTint="@color/black"
-        app:layout_constraintBottom_toBottomOf="@id/guideline7"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_end="16dp" />
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:shapeAppearanceOverlay="@drawable/black_rect_bg" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

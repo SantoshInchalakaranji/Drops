@@ -7,18 +7,22 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.prplmnstr.drops.models.Plant;
 import com.prplmnstr.drops.repository.AuthRepository;
 
-public class AuthViewModel extends AndroidViewModel {
+import java.util.List;
+
+public class AuthViewModel extends AndroidViewModel implements AuthRepository.OnFirebaseRespond{
 
     private MutableLiveData<FirebaseUser> firebaseUserMutableLiveData;
     private FirebaseUser currentUser;
     private AuthRepository authRepository;
+    private MutableLiveData<List<String>> users ;
 
     public AuthViewModel(@NonNull Application application) {
         super(application);
-
-        authRepository = new AuthRepository(application);
+        users = new MutableLiveData<>();
+        authRepository = new AuthRepository(application,this);
         currentUser = authRepository.getCurrentUser();
         firebaseUserMutableLiveData = authRepository.getFirebaseUserMutableLiveData();
 
@@ -32,12 +36,19 @@ public class AuthViewModel extends AndroidViewModel {
         return currentUser;
     }
 
-    public void signUp(String email, String password){
-        authRepository.signUp(email, password);
-    }
+
     public void signIn(String email, String password){
         authRepository.signIn(email, password);
     }
 
+    public MutableLiveData<List<String>> isUserExist(String userType){
+        authRepository.isUserExist(userType);
+        return users;
+    }
 
+
+    @Override
+    public void onUsersLoaded(List<String> users) {
+        this.users.setValue(users);
+    }
 }

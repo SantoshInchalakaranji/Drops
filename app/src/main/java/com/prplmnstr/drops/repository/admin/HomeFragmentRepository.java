@@ -73,7 +73,7 @@ public class HomeFragmentRepository  {
                             QuerySnapshot document = task.getResult();
                             if (!document.isEmpty()) {
                                 onFirebaseRespond.onPlantsLoadingSuccess(
-                                        task.getResult().toObjects(Plant.class)
+                                        document.toObjects(Plant.class)
                                 );
                             }else{
                                 onFirebaseRespond.onPlantsLoadingSuccess(

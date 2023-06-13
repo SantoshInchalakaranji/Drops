@@ -12,10 +12,28 @@
         tools:layout="@layout/fragment_splash" >
         <action
             android:id="@+id/action_splashFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
+            app:destination="@id/signInFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_splashFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_workerActivity"
+            app:destination="@id/workerActivity"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_investorActivity"
+            app:destination="@id/investorActivity"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -23,8 +41,23 @@
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in" >
         <action
-            android:id="@+id/action_signInFragment_to_dashboardFragment"
-            app:destination="@id/dashboardFragment" />
+            android:id="@+id/action_signInFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/signInFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_signInFragment_to_workerActivity"
+            app:destination="@id/workerActivity"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/signInFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_signInFragment_to_investorActivity"
+            app:destination="@id/investorActivity"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/signInFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/dashboardFragment"
@@ -34,12 +67,16 @@
         <argument
             android:name="plant"
             app:argType="string" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_addUserFragment"
+            app:destination="@id/addUserFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
     </fragment>
-    <fragment
-        android:id="@+id/addUserFragment"
-        android:name="com.prplmnstr.drops.views.admin.AddUserFragment"
-        android:label="fragment_add_user"
-        tools:layout="@layout/fragment_add_user" />
     <fragment
         android:id="@+id/outletDetailsFragment"
         android:name="com.prplmnstr.drops.views.OutletDetailsFragment"
@@ -62,6 +99,31 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/addUserFragment"
+        android:name="com.prplmnstr.drops.views.admin.AddUserFragment"
+        android:label="fragment_add_user"
+        tools:layout="@layout/fragment_add_user" >
+        <argument
+            android:name="plant"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_addUserFragment_to_dashboardFragment"
             app:destination="@id/dashboardFragment" />
     </fragment>
+    <activity
+        android:id="@+id/workerActivity"
+        android:name="com.prplmnstr.drops.views.worker.WorkerActivity"
+        android:label="activity_worker"
+        tools:layout="@layout/activity_worker" />
+    <activity
+        android:id="@+id/investorActivity"
+        android:name="com.prplmnstr.drops.InvestorActivity"
+        android:label="activity_investor"
+        tools:layout="@layout/activity_investor" />
 </navigation>

@@ -6,17 +6,9 @@
         android:icon="@drawable/baseline_home_24"
         android:title="Home" />
     <item
-        android:id="@+id/outletDetailsFragment"
-        android:icon="@drawable/baseline_bar_chart_24"
-        android:title="Overview" />
-    <item
         android:id="@+id/uploadDataFragment"
         android:icon="@drawable/baseline_add_task_24"
         android:title="Task" />
-    <item
-        android:id="@+id/userDetailsFragment"
-        android:icon="@drawable/baseline_person_24"
-        android:title="Account" />
     <item
         android:id="@+id/addUserFragment"
         android:icon="@drawable/baseline_person_add_alt_1_24"

@@ -9,52 +9,89 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.prplmnstr.drops.models.RecyclerModel;
+import com.prplmnstr.drops.models.User;
 import com.prplmnstr.drops.repository.UserDetailsRepository;
+import com.prplmnstr.drops.repository.admin.AddUserFragmentRepository;
 import com.prplmnstr.drops.utils.Constants;
 
 import java.io.Closeable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class AddUserViewModel extends ViewModel implements UserDetailsRepository.OnOutletsLoaded,UserDetailsRepository.OnOutletSaved {
-   private UserDetailsRepository userDetailsRepository ;
+public class AddUserViewModel extends ViewModel implements AddUserFragmentRepository.OnFirebaseRespond {
+    private AddUserFragmentRepository repository;
     private MutableLiveData<Boolean> result;
-    private MutableLiveData<List<String>> outlets ;
+    private MutableLiveData<List<User>> workers;
+    private MutableLiveData<List<User>> investors;
+
 
     public AddUserViewModel( ) {
-        this.userDetailsRepository =new UserDetailsRepository(this,this);
+        this.repository =new AddUserFragmentRepository(this);
         this.result = new MutableLiveData<>();
-        this.outlets = new MutableLiveData<>();
+        this.workers = new MutableLiveData<>();
+        this.investors = new MutableLiveData<>();
+
     }
 
-
-
-    public MutableLiveData<List<String>> getOutlets(){
-        userDetailsRepository.getOutletNames();
-
-        return outlets;
-    }
-
-    public MutableLiveData<Boolean> addOutlet(String outlet){
-        userDetailsRepository.addOutlet(outlet);
+    public MutableLiveData<Boolean> addUser(User user,boolean newUser){
+        repository.addNewUser(user,newUser);
         return result;
     }
-
-
-    @Override
-    public void onSuccess(List<String> outletsName) {
-        Log.i("TAG", "getOutlets:fdfd "+outletsName.size());
-        outlets.setValue(outletsName);
+    public MutableLiveData<List<User>> getWorkers(){
+        repository.getWorkers();
+        return workers;
     }
 
-    @Override
-    public void onOnfailure() {
+    public MutableLiveData<List<User>> getInvestors(){
+        repository.getInvestors();
+        return investors;
+    }
+    public List<RecyclerModel> mapUsersToRecyclerItem(List<User> users,String plantName){
+        List<RecyclerModel> recyclerModelList = new ArrayList<>();
 
+        for(User user: users) {
+            if (user.getPlantName().equals(plantName)) {
+                RecyclerModel model = new RecyclerModel();
+                model.setImageIndex(0);
+                model.setDate(user.getPassword());
+                model.setHeaderName(user.getEmail());
+                model.setSubTitleName(user.getUserName());
+                recyclerModelList.add(model);
+            }
+        }
+        return recyclerModelList;
+    }
+
+    public User isEmailExists(List<User> objectList, String targetEmail) {
+        for (User object : objectList) {
+            if (object.getEmail().equals(targetEmail)) {
+                return object;// Email address exists in the list
+            }
+        }
+        return null; // Email address does not exist in the list
     }
 
 
 
+
+
+
+
+
     @Override
-    public void onSuccess(Boolean result) {
+    public void onUserAdded(Boolean result) {
         this.result.setValue(result);
     }
+
+    @Override
+    public void onInvetorLoaded(List<User> investors) {
+        this.investors.setValue(investors);
+    }
+
+    @Override
+    public void onWorkersLoaded(List<User> worker) {
+        this.workers.setValue(worker);
+    }
+
+
 }

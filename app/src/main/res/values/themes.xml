@@ -45,7 +45,10 @@
     <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
     <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
 </style>
-
+    <style name="RoundFloatingActionButton" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item> <!-- Adjust the cornerSize value as needed -->
+    </style>
     <style name="ShapeAppearanceOverlayExtended" parent="">
         <item name="shapeAppearanceOverlay">@drawable/black_rect_bg</item>
         <item name="cornerSize">0dp</item>

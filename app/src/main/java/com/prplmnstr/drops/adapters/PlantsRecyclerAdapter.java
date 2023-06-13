@@ -21,6 +21,7 @@ import com.prplmnstr.drops.R;
 import com.prplmnstr.drops.databinding.PlantItemBinding;
 import com.prplmnstr.drops.models.Plant;
 import com.prplmnstr.drops.utils.Constants;
+import com.prplmnstr.drops.utils.Helper;
 import com.prplmnstr.drops.views.admin.HomeFragment;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class PlantsRecyclerAdapter extends RecyclerView.Adapter<PlantsRecyclerAd
 //        Glide.with(context)
 //                .load(Uri.parse(plant.getImageUri()))
 //                .into(holder.plantItemBinding.plantImage);
-        Bitmap bitmap = Constants.stringToBitmap(plant.getImage());
+        Bitmap bitmap = Helper.stringToBitmap(plant.getImage());
         holder.plantItemBinding.plantImage.setImageBitmap(bitmap);
         Log.i("TAG", "list size "+String.valueOf(plants.size())+ plant.getPlantName());
     }

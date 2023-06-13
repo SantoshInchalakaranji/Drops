@@ -13,4 +13,49 @@
 
     </array>
 
+    <array name="store_with_green">
+        <item>@drawable/store_1</item>
+        <item>@drawable/store_2</item>
+        <item>@drawable/store_3</item>
+    </array>
+
+    <array name="store">
+        <item>@drawable/store_1</item>
+        <item>@drawable/store_2</item>
+
+    </array>
+    <array name="truck_with_green">
+        <item>@drawable/water_truck_1</item>
+        <item>@drawable/water_truck_2</item>
+        <item>@drawable/water_truck_3</item>
+    </array>
+
+    <array name="truck">
+        <item>@drawable/water_truck_1</item>
+        <item>@drawable/water_truck_2</item>
+
+    </array>
+    <array name="machine_with_green">
+        <item>@drawable/vending_machine_1</item>
+        <item>@drawable/vending_machine_2</item>
+        <item>@drawable/vending_machine_3</item>
+    </array>
+
+    <array name="machine">
+        <item>@drawable/vending_machine_1</item>
+        <item>@drawable/vending_machine_2</item>
+
+    </array>
+
+    <array name="workers">
+        <item>@drawable/employee_1</item>
+        <item>@drawable/employee_2</item>
+        <item>@drawable/employee_3</item>
+    </array>
+    <array name="investor">
+        <item>@drawable/investor_1</item>
+        <item>@drawable/investor_2</item>
+        <item>@drawable/investor_3</item>
+    </array>
+
 </resources>

@@ -57,22 +57,22 @@ public class MainActivity extends AppCompatActivity {
 
         //show add user fragment for admin
         //else show account details fragment for user
-        FirebaseUser firebaseUser = viewModel.getCurrentUser();
-        if(firebaseUser!=null) {
-            checkForAdmin(firebaseUser);
-        }
+//        FirebaseUser firebaseUser = viewModel.getCurrentUser();
+//        if(firebaseUser!=null) {
+//            checkForAdmin(firebaseUser);
+//        }
 
     }
 
-    public void checkForAdmin(FirebaseUser firebaseUser) {
-
-            if (firebaseUser.getEmail().equals(Constants.ADMIN_MAIL)) {
-                binding.navigationBar.getMenu().removeItem(R.id.userDetailsFragment);
-                binding.navigationBar.getMenu().removeItem(R.id.uploadDataFragment);
-            } else {
-                binding.navigationBar.getMenu().removeItem(R.id.addUserFragment);
-            }
-        }
+//    public void checkForAdmin(FirebaseUser firebaseUser) {
+//
+//            if (firebaseUser.getEmail().equals(Constants.ADMIN_MAIL)) {
+//                binding.navigationBar.getMenu().removeItem(R.id.userDetailsFragment);
+//                binding.navigationBar.getMenu().removeItem(R.id.uploadDataFragment);
+//            } else {
+//                binding.navigationBar.getMenu().removeItem(R.id.addUserFragment);
+//            }
+//        }
 
 }
 

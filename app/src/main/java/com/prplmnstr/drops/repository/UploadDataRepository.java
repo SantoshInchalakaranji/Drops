@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.prplmnstr.drops.models.Transaction;
 import com.prplmnstr.drops.utils.Helper;
 
 public class UploadDataRepository {
@@ -26,26 +25,26 @@ public class UploadDataRepository {
 
     }
 
-    public void saveTransaction(Transaction transaction){
-        String outletName = "userDetailsRepository.getOutletName();";
-        String date = helper.getDateInStringFormat(transaction.getDay(),
-                transaction.getMonth(),transaction.getYear());
-        String doucmentId = outletName+"_"+date;
-
-
-        firebaseFirestore.collection(outletName)
-                .document(doucmentId)
-                .set(transaction)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(context, "Data Uploaded", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context, "Data Upload Failed Due to "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
+//    public void saveTransaction(Transaction transaction){
+//        String outletName = "userDetailsRepository.getOutletName();";
+//        String date = helper.getDateInStringFormat(transaction.getDay(),
+//                transaction.getMonth(),transaction.getYear());
+//        String doucmentId = outletName+"_"+date;
+//
+//
+//        firebaseFirestore.collection(outletName)
+//                .document(doucmentId)
+//                .set(transaction)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void unused) {
+//                        Toast.makeText(context, "Data Uploaded", Toast.LENGTH_SHORT).show();
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(context, "Data Upload Failed Due to "+e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//    }
 }
