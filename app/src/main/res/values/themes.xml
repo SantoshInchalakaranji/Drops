@@ -8,6 +8,12 @@
         <item name="android:fontFamily">@font/segeo_bold</item>
         <item name="android:textSize">26sp</item>
     </style>
+    <style name="GraphText">
+        <item name="android:fontFamily">@font/segeo_semi_bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="TitleStyle">
         <item name="android:fontFamily">@font/segeo_bold</item>
         <item name="android:textSize">20sp</item>

@@ -10,23 +10,67 @@
 
     tools:context=".views.admin.DashboardFragment">
 
-    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-    <!--        android:id="@+id/addUnitActionButton"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
+    <ImageView
+        android:id="@+id/addUnitImage"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/no_bg_ripple"
+        android:clickable="true"
+        android:src="@drawable/baseline_add_circle_outline_24"
+        app:layout_constraintBottom_toBottomOf="@+id/dashboardTV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dashboardTV" />
 
-    <!--        android:layout_marginRight="16dp"-->
-    <!--        android:layout_marginBottom="16dp"-->
-    <!--        android:src="@drawable/baseline_add_24"-->
 
-    <!--        app:backgroundTint="@color/black"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintRight_toRightOf="parent"-->
-    <!--        app:rippleColor="@color/dark_gray"-->
-    <!--        app:shapeAppearanceOverlay="@style/RoundFloatingActionButton"-->
-    <!--        app:tint="@null" />-->
+    <ImageView
+        android:id="@+id/backButtonDashboard"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:clickable="true"
+        android:src="@drawable/baseline_arrow_back_24"
+        app:layout_constraintBottom_toBottomOf="@+id/dashboardTV"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dashboardTV" />
+
+
+    <TextView
+        android:id="@+id/dashboardTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="8dp"
+
+
+        android:padding="8dp"
+
+        android:text="Dashboard"
+        android:textAppearance="@style/LargeText"
+
+
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/backButtonDashboard"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/addUnitActionButton"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+
+<!--            android:layout_marginRight="16dp"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            android:src="@drawable/baseline_add_24"-->
+
+<!--            app:backgroundTint="@color/black"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:rippleColor="@color/dark_gray"-->
+<!--            app:shapeAppearanceOverlay="@style/RoundFloatingActionButton"-->
+<!--            app:tint="@null" />-->
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
 
@@ -34,7 +78,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/dashboardTV">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,31 +87,6 @@
             android:clipToPadding="false"
             android:paddingBottom="8dp">
 
-            <ImageView
-                android:id="@+id/backButtonDashboard"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                android:clickable="true"
-                android:src="@drawable/baseline_arrow_back_24"
-                app:layout_constraintBottom_toBottomOf="@+id/dashboardTV"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/dashboardTV" />
-
-
-            <TextView
-                android:id="@+id/dashboardTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:text="Dashboard"
-                android:textAppearance="@style/LargeText"
-
-
-                android:textColor="@color/black"
-                app:layout_constraintStart_toEndOf="@+id/backButtonDashboard"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
@@ -97,7 +116,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="4dp"
-                        android:text="Month"
+                        android:text="Today"
                         android:textAppearance="@style/SubTitleStyleSemiBold"
 
                         app:layout_constraintStart_toStartOf="parent"
@@ -127,7 +146,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/totalAmountTV" />
 
                     <TextView
-                        android:id="@+id/averageTV"
+                        android:id="@+id/waterDispenseTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -151,6 +170,18 @@
                         app:layout_constraintStart_toEndOf="@+id/linearProgressBar"
                         app:layout_constraintTop_toTopOf="@+id/linearProgressBar" />
 
+                    <TextView
+                        android:id="@+id/completeTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="4dp"
+                        android:text="completed"
+                        android:textAppearance="@style/SubTitleStyleSemiBold"
+
+                        app:layout_constraintBottom_toBottomOf="@+id/waterDispenseTV"
+                        app:layout_constraintEnd_toEndOf="@id/percentageTV"
+                        app:layout_constraintTop_toTopOf="@+id/waterDispenseTV" />
+
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guideline4"
                         android:layout_width="wrap_content"
@@ -163,13 +194,109 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:layout_marginBottom="8dp"
-                        android:src="@drawable/statistics"
+                        android:src="@drawable/checklist"
                         app:layout_constraintBottom_toTopOf="@+id/percentageTV"
                         app:layout_constraintEnd_toEndOf="@+id/percentageTV"
                         app:layout_constraintStart_toStartOf="@+id/percentageTV" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
+
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/attendanceCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:elevation="4dp"
+            app:cardBackgroundColor="@color/blue"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/MonthlyTV">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:clipToPadding="false"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="0dp"
+                android:paddingBottom="16dp">
+
+                <TextView
+                    android:id="@+id/present"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:text="Present"
+                    android:textAppearance="@style/SubTitleStyleSemiBold"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/presentNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:text="4"
+                    android:textAppearance="@style/LargeText"
+
+                    android:textSize="18sp"
+
+                    app:layout_constraintEnd_toEndOf="@+id/present"
+                    app:layout_constraintStart_toStartOf="@+id/present"
+                    app:layout_constraintTop_toBottomOf="@+id/present" />
+
+
+                <TextView
+                    android:id="@+id/absent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+
+                    android:padding="4dp"
+                    android:text="Absent"
+                    android:textColor="@color/black"
+                    android:textAppearance="@style/SubTitleStyleSemiBold"
+                    app:layout_constraintStart_toEndOf="@+id/present"
+                    app:layout_constraintTop_toTopOf="@+id/present" />
+
+                <TextView
+                    android:id="@+id/absentNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:text="2"
+                    android:textAppearance="@style/LargeText"
+
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="@+id/absent"
+                    app:layout_constraintStart_toStartOf="@+id/absent"
+                    app:layout_constraintTop_toBottomOf="@+id/absent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/attendanceRV"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:nestedScrollingEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/present"
+                    app:layout_constraintTop_toBottomOf="@+id/presentNumber" />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline2"
@@ -189,14 +316,13 @@
                 android:id="@+id/dailyTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:fontFamily="@font/segeo_bold"
                 android:text="Daily Report"
                 android:textAppearance="@style/RegularStyle"
                 android:textColor="#BDBDBE"
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="@+id/cardView"
-                app:layout_constraintTop_toBottomOf="@+id/dashboardTV" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/seeAllTV"
@@ -216,7 +342,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/segeo_bold"
-                android:text="Monthly"
+                android:text="Attendance Report"
                 android:textAppearance="@style/RegularStyle"
                 android:textColor="#BDBDBE"
                 android:textSize="13sp"
@@ -228,88 +354,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/segeo_bold"
-                android:text="See All"
+                android:text="Today"
                 android:textAppearance="@style/RegularStyle"
                 android:textColor="#537FFD"
                 android:textSize="13sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toTopOf="@+id/MonthlyTV" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/monthlyCardView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:elevation="4dp"
-                app:cardBackgroundColor="@color/blue"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="4dp"
-                app:layout_constraintEnd_toStartOf="@+id/guideline3"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/MonthlyTV">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/monthlyLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:paddingStart="16dp"
-                    android:paddingTop="16dp"
-                    android:paddingEnd="0dp"
-                    android:paddingBottom="16dp">
-
-                    <TextView
-                        android:id="@+id/monthTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="4dp"
-                        android:text="Month"
-                        android:textAppearance="@style/SubTitleStyleSemiBold"
-
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/monthTotalAmount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="4dp"
-                        android:text="$ 500"
-                        android:textAppearance="@style/LargeText"
-                        android:textColor="@color/white"
-                        app:layout_constraintStart_toStartOf="@+id/monthTV"
-                        app:layout_constraintTop_toBottomOf="@+id/monthTV" />
-
-
-                    <TextView
-                        android:id="@+id/monthlyWaterUsageTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:padding="4dp"
-                        android:text="Daily average :"
-                        android:textAppearance="@style/SubTitleStyleSemiBold"
-
-                        app:layout_constraintStart_toStartOf="@+id/monthTotalAmount"
-                        app:layout_constraintTop_toBottomOf="@+id/monthTotalAmount" />
-
-                    <TextView
-                        android:id="@+id/monthlyPercentageTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="4dp"
-                        android:text="70%"
-                        android:textAppearance="@style/SubTitleStyleSemiBold"
-
-                        app:layout_constraintBottom_toBottomOf="@+id/monthTotalAmount"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/monthTotalAmount"
-                        app:layout_constraintTop_toTopOf="@+id/monthTotalAmount" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
@@ -317,21 +368,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/noPlantsLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:visibility="visible"
+        android:layout_height="0dp"
+        android:background="@color/background"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toBottomOf="@+id/dashboardTV">
 
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/white"
+            android:background="@color/background"
             android:src="@drawable/blue_girl_water"
             app:layout_constraintBottom_toTopOf="@+id/guideline9"
             app:layout_constraintEnd_toEndOf="parent"
@@ -391,31 +441,6 @@
             app:layout_constraintStart_toStartOf="@+id/textView3"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-        <TextView
-            android:id="@+id/dashboardDummyTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-
-
-            android:text="Dashboard"
-
-            android:textAppearance="@style/LargeText"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toEndOf="@+id/backButton"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/backButton"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="8dp"
-            android:clickable="true"
-            android:src="@drawable/baseline_arrow_back_24"
-            app:layout_constraintBottom_toBottomOf="@+id/dashboardDummyTV"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/dashboardDummyTV" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

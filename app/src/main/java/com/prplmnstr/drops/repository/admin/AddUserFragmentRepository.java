@@ -11,9 +11,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.prplmnstr.drops.models.Attendance;
+import com.prplmnstr.drops.models.Date;
 import com.prplmnstr.drops.models.Plant;
 import com.prplmnstr.drops.models.User;
 import com.prplmnstr.drops.utils.Constants;
+import com.prplmnstr.drops.utils.Helper;
 
 import java.util.List;
 
@@ -105,6 +108,21 @@ public class AddUserFragmentRepository {
 
     public void addNewUser(User user,boolean newUser){
 
+        if(newUser){
+            if(user.getUserType().equals(Constants.WORKER)){
+                Date today = Helper.getTodayDateObject();
+                Attendance attendance = new Attendance(user.getPlantName(), user.getUserName(),
+                      today.getDay(), today.getMonth(), today.getYear(), Constants.NO_ATTENDANCE);
+                firebaseFirestore.collection(Constants.ATTENDANCE)
+                        .document(user.getPlantName()+"_"+user.getUserName()+"_"+today.getDateInStringFormat())
+                        .set(attendance).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                            }
+                        });
+            }
+        }
 
 
         firebaseFirestore.collection(user.getUserType())
@@ -115,6 +133,7 @@ public class AddUserFragmentRepository {
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             if(newUser){
+
                                 signUpUser(user.getEmail(), user.getPassword());
                             }else{
                                 onFirebaseRespond.onUserAdded(true);

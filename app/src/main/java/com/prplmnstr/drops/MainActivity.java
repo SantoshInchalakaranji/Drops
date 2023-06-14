@@ -43,13 +43,13 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
-                if(navDestination.getId() == R.id.splashFragment || navDestination.getId() == R.id.signInFragment
-                        || navDestination.getId() == R.id.homeFragment){
+                if(navDestination.getId() == R.id.dashboardFragment || navDestination.getId() == R.id.addUserFragment
+                        ){
 
-                    binding.navigationBar.setVisibility(View.GONE);
+                    binding.navigationBar.setVisibility(View.VISIBLE);
 
                 }else{
-                    binding.navigationBar.setVisibility(View.VISIBLE);
+                    binding.navigationBar.setVisibility(View.GONE);
 
                 }
             }

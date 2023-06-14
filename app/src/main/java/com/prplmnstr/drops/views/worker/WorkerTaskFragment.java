@@ -53,7 +53,7 @@ public class WorkerTaskFragment extends Fragment {
     private Dialog editRecordDialog;
     private ArrayAdapter spinnerAdapter;
     private AddRecordDialogBinding addRecordDialogBinding;
-    private int amountCollection,waterSupply,taskCount;
+    private int taskCount;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

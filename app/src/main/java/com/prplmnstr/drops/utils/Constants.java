@@ -13,6 +13,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public  class Constants {
+    public  static  int PRESENT = 1;
+    public  static  int ABSENT = 0;
+    public  static  int NO_ATTENDANCE = 2;
+    public  static  String  ATTENDANCE = "Attendances";
     public static String  OUTLETS = "Outlets";
     public static String  PLANTS = "Plants";
     public static String  NAME = "name";

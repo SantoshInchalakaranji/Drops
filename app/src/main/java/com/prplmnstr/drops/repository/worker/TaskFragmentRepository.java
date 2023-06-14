@@ -104,6 +104,7 @@ public class TaskFragmentRepository {
                     .orderBy("year", Query.Direction.DESCENDING)
                     .orderBy("month",Query.Direction.DESCENDING)
                     .orderBy("day",Query.Direction.DESCENDING)
+
                     .limit(1)
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override

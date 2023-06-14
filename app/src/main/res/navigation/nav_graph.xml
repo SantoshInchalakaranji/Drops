@@ -76,6 +76,9 @@
             app:launchSingleTop="true"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_dailyInfoFragment"
+            app:destination="@id/dailyInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/outletDetailsFragment"
@@ -126,4 +129,9 @@
         android:name="com.prplmnstr.drops.InvestorActivity"
         android:label="activity_investor"
         tools:layout="@layout/activity_investor" />
+    <fragment
+        android:id="@+id/dailyInfoFragment"
+        android:name="com.prplmnstr.drops.views.admin.DailyInfoFragment"
+        android:label="fragment_daily_info"
+        tools:layout="@layout/fragment_daily_info" />
 </navigation>

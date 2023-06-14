@@ -25,8 +25,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:textAppearance="@style/TitleStyle"
-                        android:text="Unit Name"
-                        android:textColor="@color/black"/>
+
+                        android:textColor="@color/black"
+                        android:text="Unit Name"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

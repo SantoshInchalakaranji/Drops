@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/dialogContainer"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_margin="16dp"
+            android:background="@color/white"
+            android:padding="16dp">
+            <TextView
+                android:id="@+id/unitNameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:textAppearance="@style/TitleStyle"
+
+                android:textColor="@color/black"
+                android:text="Unit Name"/>
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                android:layout_width="match_parent"
+                android:id="@+id/calender"
+                android:layout_height="300dp"
+                app:layout_constraintEnd_toEndOf="parent"
+
+                />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
+
+
+

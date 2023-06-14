@@ -18,26 +18,36 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prplmnstr.drops.MainActivity;
 import com.prplmnstr.drops.R;
+import com.prplmnstr.drops.adapters.AttendanceRvAdapter;
 import com.prplmnstr.drops.adapters.DashboardRecyclerAdapter;
 import com.prplmnstr.drops.databinding.AddPlantDialogBinding;
 import com.prplmnstr.drops.databinding.AddUnitDialogBinding;
+import com.prplmnstr.drops.databinding.CalenderDialogBinding;
 import com.prplmnstr.drops.databinding.DashboardListViewItemBinding;
 import com.prplmnstr.drops.databinding.FragmentDashboardBinding;
 import com.prplmnstr.drops.databinding.FragmentSignInBinding;
+import com.prplmnstr.drops.models.Attendance;
+import com.prplmnstr.drops.models.Plant;
+import com.prplmnstr.drops.models.Record;
 import com.prplmnstr.drops.models.RecyclerModel;
 import com.prplmnstr.drops.utils.Constants;
 import com.prplmnstr.drops.viewModel.AuthViewModel;
@@ -45,41 +55,45 @@ import com.prplmnstr.drops.viewModel.DashboardViewModel;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 
 public class DashboardFragment extends Fragment implements NavController.OnDestinationChangedListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     private FragmentDashboardBinding binding;
-    private DashboardRecyclerAdapter adapter;
-    private RecyclerView recyclerView;
+    private AttendanceRvAdapter adapter;
+    private RecyclerView attendanceRV;
     private DashboardViewModel viewModel;
     private ArrayAdapter spinnerAdapter;
     private Dialog loader;
     private Dialog addUnitDialog;
+    private Dialog calenderDialog;
+    private CalenderDialogBinding calenderDialogBinding;
     private AddUnitDialogBinding addUnitDialogBinding;
     private BottomNavigationView bottomNavigationView;
 
     // adding unit variables
-    private String unitType ,unitName;
+    private String unitType, unitName;
     private int opening, waterOpening;
 
     private NavController navController;
-    public static String PLANT_NAME ;
-
-
+    public static String PLANT_NAME;
+    private List<Record> todayRecords = new ArrayList<>();
+    private List<Attendance> attendanceList = new ArrayList<>();
+    private int noOfUits;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentDashboardBinding.inflate(inflater,container,false);
+        binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
         return view;
-
-
 
 
     }
@@ -89,26 +103,42 @@ public class DashboardFragment extends Fragment implements NavController.OnDesti
         super.onViewCreated(view, savedInstanceState);
 
 
+
+
+
+
+
+
         navController = Navigation.findNavController(view);
         navController.addOnDestinationChangedListener(this);
-
 
 
         bottomNavigationView = requireActivity().findViewById(R.id.navigationBar);
 
         // Set the OnNavigationItemSelectedListener
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        PLANT_NAME= DashboardFragmentArgs.fromBundle(getArguments()).getPlant();
+        PLANT_NAME = DashboardFragmentArgs.fromBundle(getArguments()).getPlant();
 
 
 
-        binding.dashboardDummyTV.setText(PLANT_NAME);
-        binding.dashboardTV.setText(PLANT_NAME);
+
+
 
         try {
             initialize_loader();
-            //loader.show();
+            loader.show();
             loadDialog();
+            checkUnitSize(PLANT_NAME);
+
+
+            binding.dashboardTV.setText(PLANT_NAME);
+            binding.addUnitImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    addUnitDialog.show();
+                }
+            });
+
 
             binding.noUnitAddButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -117,25 +147,204 @@ public class DashboardFragment extends Fragment implements NavController.OnDesti
                 }
             });
 
+            binding.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    navController.navigate(R.id.action_dashboardFragment_to_dailyInfoFragment);
+                }
+            });
+
+            binding.seeAllTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    navController.navigate(R.id.action_dashboardFragment_to_dailyInfoFragment);
+                }
+            });
 
 
 
-
-
-
-        }catch (Exception e){
-
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-
-
-
 
 
 //
 
 
+    }
+
+    private void checkUnitSize(String plantName) {
+
+        viewModel.noOfUnits(plantName).observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer size) {
+                if(size>0){
+                    binding.mainLayout.setVisibility(View.VISIBLE);
+                    binding.noPlantsLayout.setVisibility(View.INVISIBLE);
+                    load_blue_box();
+                    loadAttendance(PLANT_NAME);
 
 
+                }else{
+                    binding.mainLayout.setVisibility(View.INVISIBLE);
+                    binding.noPlantsLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    private void loadAttendance(String plantName) {
+
+        attendanceRV = binding.attendanceRV;
+        attendanceRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+        attendanceRV.setHasFixedSize(true);
+        adapter = new AttendanceRvAdapter();
+        attendanceRV.setAdapter(adapter);
+
+
+
+
+        adapter.setListener(new AttendanceRvAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Attendance attendance, int clickPosition) {
+                loadAttendanceDailog(attendance);
+            }
+
+            @Override
+            public void onPresentClick(Attendance attendance,int position) {
+                loader.show();
+                attendance.setAttendance(Constants.PRESENT);
+                attendanceList.get(position).setAttendance(Constants.PRESENT);
+                displayTotalAttendance(attendanceList);
+
+                viewModel.addAttendance(attendance).observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+                    @Override
+                    public void onChanged(Boolean aBoolean) {
+                        loader.dismiss();
+                        if(aBoolean){
+
+                           // adapter.setAttendanceList(attendanceList);
+                            Toast.makeText(getActivity(), "Attendance registered.", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(getActivity(), "Attendance registration failed", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+            }
+
+            @Override
+            public void onAbsentClick(Attendance attendance,int postition) {
+                attendanceList.get(postition).setAttendance(Constants.ABSENT);
+                displayTotalAttendance(attendanceList);
+                loader.show();
+            attendance.setAttendance(Constants.ABSENT);
+                viewModel.addAttendance(attendance).observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+                @Override
+                public void onChanged(Boolean aBoolean) {
+                    loader.dismiss();
+                    if(aBoolean){
+
+                        //adapter.setAttendanceList(attendanceList);
+                        Toast.makeText(getActivity(), "Attendance registered.", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(getActivity(), "Attendance registration failed", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
+        }
+
+            @Override
+            public void onDeleteRequest(Attendance attendance) {
+
+
+            }
+        });
+
+        viewModel.getAttendances(PLANT_NAME).observe(getViewLifecycleOwner(), new Observer<List<Attendance>>() {
+            @Override
+            public void onChanged(List<Attendance> attendances) {
+                attendanceList = attendances;
+
+                adapter.setResources(getResources());
+
+                adapter.setAttendanceList(attendanceList);
+               displayTotalAttendance(attendances);
+            }
+        });
+    }
+
+    private void displayTotalAttendance(List<Attendance> attendances) {
+        Map<String,String> map = new HashMap<>();
+        map = viewModel.getSumOfAttendances(attendances);
+        binding.presentNumber.setText(map.get("present"));
+        binding.absentNumber.setText(map.get("absent"));
+    }
+
+    private void loadAttendanceDailog(Attendance attendance) {
+        loader.show();
+        calenderDialogBinding = CalenderDialogBinding.inflate(LayoutInflater.from(getContext()));
+
+
+        calenderDialog = new Dialog(getActivity());
+        calenderDialog.setContentView(calenderDialogBinding.getRoot());
+        calenderDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        calenderDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        calenderDialog.setCancelable(true);
+        calenderDialog.getWindow().getAttributes().windowAnimations = R.style.animation_popup;
+
+        calenderDialogBinding.unitNameTV.setText(attendance.getUserName());
+        calenderDialogBinding.calender.setSelectionMode (MaterialCalendarView.SELECTION_MODE_NONE);
+
+        viewModel.getAttendanceOfUser(attendance).observe(getViewLifecycleOwner(), new Observer<List<Attendance>>() {
+            @Override
+            public void onChanged(List<Attendance> attendances) {
+                loader.dismiss();
+                if(attendances!=null){
+
+                    for(Attendance data : attendances){
+
+                        CalendarDay calendarDay = CalendarDay.from(data.getYear(), data.getMonth(), data.getDay());
+                        calenderDialogBinding.calender.setDateSelected(calendarDay,true);
+                    }
+                }else{
+                    Toast.makeText(getActivity(), "Failed to load attendance record", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        calenderDialog.show();
+    }
+
+    private void load_blue_box() {
+
+        viewModel.getTodayRecord(PLANT_NAME).observe(getViewLifecycleOwner(), new Observer<List<Record>>() {
+            @Override
+            public void onChanged(List<Record> recordList) {
+                if(recordList!=null){
+                    todayRecords = recordList;
+                }
+                viewModel.getNoOfUnits().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+                    @Override
+                    public void onChanged(Integer integer) {
+                        noOfUits = integer;
+
+
+                        binding.percentageTV.setText(todayRecords.size()+"/"+ noOfUits);
+                        Map<String ,Integer> map = viewModel.getBlueBoxDetails(recordList);
+                        binding.totalAmountTV.setText("₹ "+map.get("sum"));
+                        binding.waterDispenseTV.setText("Water dispense(L) : "+map.get("waterSupply"));
+                        loader.dismiss();
+                    }
+                });
+
+
+            }
+        });
     }
 
     private void loadDialog() {
@@ -146,7 +355,7 @@ public class DashboardFragment extends Fragment implements NavController.OnDesti
         addUnitDialog = new Dialog(getActivity());
         addUnitDialog.setContentView(addUnitDialogBinding.getRoot());
         addUnitDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
-        addUnitDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        addUnitDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         addUnitDialog.setCancelable(true);
         addUnitDialog.getWindow().getAttributes().windowAnimations = R.style.animation_popup;
@@ -162,10 +371,10 @@ public class DashboardFragment extends Fragment implements NavController.OnDesti
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 unitType = Constants.UNIT_TYPE.get(i);
-                if(unitType.equals(Constants.RECHARGE_UNIT)){
+                if (unitType.equals(Constants.RECHARGE_UNIT)) {
                     addUnitDialogBinding.waterOpening.setVisibility(View.GONE);
                     addUnitDialogBinding.openingET.setHint("Enter Opening Balance");
-                }else{
+                } else {
                     addUnitDialogBinding.waterOpening.setVisibility(View.VISIBLE);
                     addUnitDialogBinding.openingET.setHint("Enter Opening Reading(cash/coin)");
                 }
@@ -185,36 +394,37 @@ public class DashboardFragment extends Fragment implements NavController.OnDesti
                 loader.show();
                 unitName = addUnitDialogBinding.nameET.getText().toString().trim();
                 String openingText = addUnitDialogBinding.openingET.getText().toString();
-                if(openingText.isEmpty()){
+                if (openingText.isEmpty()) {
                     addUnitDialogBinding.openingET.setError("Enter opening reading/balance");
                     return;
-                }else{
+                } else {
                     opening = Integer.parseInt(openingText);
                 }
                 String openingWater = addUnitDialogBinding.waterOpening.getText().toString();
-                if(openingWater.isEmpty()){
+                if (openingWater.isEmpty()) {
                     addUnitDialogBinding.waterOpening.setError("Enter opening reading");
                     return;
-                }else{
+                } else {
                     waterOpening = Integer.parseInt(openingWater);
                 }
 
-                if(!unitType.equals(Constants.RECHARGE_UNIT) ){
+                if (!unitType.equals(Constants.RECHARGE_UNIT)) {
                     waterOpening = Integer.parseInt(openingWater);
-                }else{
+                } else {
                     waterOpening = 0;
                 }
-                if(unitName.isEmpty()){
+                if (unitName.isEmpty()) {
                     addUnitDialogBinding.nameET.setError("Enter unit name");
-                }
-                else {
-                    viewModel.addNewUnit(PLANT_NAME,unitName,unitType,opening,waterOpening).observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+                } else {
+                    viewModel.addNewUnit(PLANT_NAME, unitName, unitType, opening, waterOpening).observe(getViewLifecycleOwner(), new Observer<Boolean>() {
                         @Override
                         public void onChanged(Boolean result) {
                             loader.dismiss();
-                            if(result){
+                            if (result) {
+
+                                checkUnitSize(PLANT_NAME);
                                 Toast.makeText(getActivity(), "Unit Added", Toast.LENGTH_SHORT).show();
-                            }else{
+                            } else {
                                 Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
                             }
                             addUnitDialog.dismiss();
@@ -228,42 +438,15 @@ public class DashboardFragment extends Fragment implements NavController.OnDesti
     }
 
 
-
-
-
     private void initialize_loader() {
         loader = new Dialog(getActivity());
         loader.setContentView(R.layout.loader);
         loader.getWindow().setBackgroundDrawableResource(R.color.transparent);
-        loader.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        loader.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         loader.setCancelable(false);
         loader.getWindow().getAttributes().windowAnimations = R.style.animation;
 
     }
-
-//    private void loadRecyclerView() {
-//
-//
-//
-//        recyclerView = binding.recyclerView;
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        recyclerView.setHasFixedSize(true);
-//        adapter = new DashboardRecyclerAdapter();
-//        recyclerView.setAdapter(adapter);
-//        //For random image resourse
-//        final TypedArray imgs = getResources().obtainTypedArray(R.array.images);
-//        final Random rand = new Random();
-//        for(RecyclerModel item : recyclerItems){
-//             int rndInt = rand.nextInt(imgs.length());
-//            int resID = imgs.getResourceId(rndInt, R.drawable.statistics);
-//            item.setImageIndex(resID);
-//
-//        }
-//        adapter.setRecyclerItems(recyclerItems);
-//
-//
-//
-//    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -290,7 +473,7 @@ public class DashboardFragment extends Fragment implements NavController.OnDesti
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.addUserFragment){
+        if (item.getItemId() == R.id.addUserFragment) {
 
             NavDirections action = DashboardFragmentDirections.actionDashboardFragmentToAddUserFragment(PLANT_NAME);
             navController.navigate(action);
