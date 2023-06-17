@@ -2,6 +2,7 @@ package com.prplmnstr.drops.viewModel;
 
 
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.BitmapDrawable;
@@ -134,8 +135,8 @@ public class TaskFragmentViewModel extends ViewModel implements TaskFragmentRepo
         return list;
     }
 
-    public MutableLiveData<Boolean> addRecord(Record record){
-        repository.addRecord(record);
+    public MutableLiveData<Boolean> addRecord(Record record,Context context){
+        repository.addRecord(record,context);
         return result;
     }
 
@@ -147,7 +148,7 @@ public class TaskFragmentViewModel extends ViewModel implements TaskFragmentRepo
     @Override
     public void onTasksLoaded(List<Record> records) {
 
-        Log.i("RECCC", "onTasksLoaded: "+records.size());
+      //  Log.i("RECCC", "onTasksLoaded: "+records.size());
         this.records.setValue(records);
     }
 

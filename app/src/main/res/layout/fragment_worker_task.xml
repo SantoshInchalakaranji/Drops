@@ -26,6 +26,17 @@
             android:clipToPadding="false"
             android:paddingBottom="8dp">
 
+            <ImageView
+                android:id="@+id/logoutImage"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/no_bg_ripple"
+                android:clickable="true"
+                android:src="@drawable/baseline_more_vert_24"
+                app:layout_constraintBottom_toBottomOf="@+id/dashboardTV"
+                app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toTopOf="@+id/dashboardTV" />
+
             <TextView
                 android:id="@+id/dashboardTV"
                 android:layout_width="wrap_content"

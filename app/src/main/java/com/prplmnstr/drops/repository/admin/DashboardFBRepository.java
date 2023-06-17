@@ -1,6 +1,7 @@
 package com.prplmnstr.drops.repository.admin;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -24,9 +25,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.prplmnstr.drops.R;
 import com.prplmnstr.drops.models.Attendance;
 import com.prplmnstr.drops.models.Date;
 import com.prplmnstr.drops.models.Plant;
+import com.prplmnstr.drops.models.PlantReport;
 import com.prplmnstr.drops.models.Record;
 import com.prplmnstr.drops.models.RecyclerModel;
 import com.prplmnstr.drops.models.Unit;
@@ -50,6 +53,11 @@ public class DashboardFBRepository {
     private List<Record> records = new ArrayList<>();
     private List<User> workers = new ArrayList<>();
     List<Attendance> attendances = new ArrayList<>();
+    List<Unit> units  = new ArrayList<>();
+    List<Record> montlyRecords  = new ArrayList<>();
+    PlantReport plantReport = new PlantReport();
+
+
 
 
     public DashboardFBRepository(OnFirebaseRespond onFirebaseRespond){
@@ -73,7 +81,8 @@ public class DashboardFBRepository {
                 });
     }
 
-    public void saveAttendance(Attendance attendance){
+
+    public void saveAttendance(Attendance attendance, Context context){
         Date today = Helper.getTodayDateObject();
 
         firebaseFirestore.collection(Constants.ATTENDANCE)
@@ -82,10 +91,10 @@ public class DashboardFBRepository {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-                            onFirebaseRespond.onAttendanceChanged(true);
+                            Toast.makeText(context, "Attendance registered.", Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            onFirebaseRespond.onAttendanceChanged(false);
+                            Toast.makeText(context, "Attendance registration failed", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -112,6 +121,122 @@ public class DashboardFBRepository {
 
     }
 
+//    public void getMonthlyData(String plantName){
+//
+//
+//            firebaseFirestore.collection(plantName)
+//                    .get()
+//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                            if (task.isSuccessful()) {
+//                                QuerySnapshot snapshot = task.getResult();
+//                                if (!snapshot.isEmpty()) {
+//                                    units = snapshot.toObjects(Unit.class);
+//                                 //   Log.i("TAG", "date-----------------------"+date.getDay()+"-"+date.getMonth());
+//                                   getUnitsMonthlyData (units,plantName);
+//
+//                                }else{
+//                                    onFirebaseRespond.onGettingMontlyData(null);
+//                                }
+//                            }
+//                        }
+//                    });
+//
+//
+//    }
+
+
+
+
+
+
+
+
+    public  void savePlantReport(PlantReport plantReport){
+        Date today = Helper.getTodayDateObject();
+        firebaseFirestore.collection(Constants.PLANT_REPORTS)
+                .document(plantReport.getPlantName()+"_"+today.getDateInStringFormat())
+                .set(plantReport);
+    }
+
+    public void getPlantReport(String plantName){
+        Date today = Helper.getTodayDateObject();
+        firebaseFirestore.collection(Constants.PLANT_REPORTS)
+                .whereEqualTo(Constants.PLANT_NAME,plantName)
+                .orderBy("year", Query.Direction.DESCENDING)
+                .orderBy("month",Query.Direction.DESCENDING)
+                .orderBy("day",Query.Direction.DESCENDING)
+
+                .limit(1)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            if(!task.getResult().isEmpty()){
+                                Log.i("TAG", "onComplete: result not empty");
+                                plantReport = task.getResult().toObjects(PlantReport.class).get(0);
+                                onFirebaseRespond.onPlantReportLoaded(plantReport);
+                            }
+
+
+                        }else{
+                            onFirebaseRespond.onPlantReportLoaded(null);
+                        }
+                    }
+                });
+    }
+
+
+
+
+    public void getMonthlyData( String plantName) {
+
+
+        Date today = Helper.getTodayDateObject();
+
+
+
+
+            firebaseFirestore.collection(Constants.RECORDS)
+                    .whereEqualTo(Constants.PLANT_NAME,plantName)
+                    .whereEqualTo("year",today.getYear())
+                    .whereEqualTo("month",today.getMonth())
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful()){
+
+                        QuerySnapshot snapshot = task.getResult();
+                        if(snapshot.isEmpty()){
+                            Record record = new Record();
+                            record.setUnitName("");
+                            record.setMonth(today.getMonth());
+                            record.setYear(today.getYear());
+                            record.setDay(today.getDay());
+                            record.setPlantName(plantName);
+                            record.setType("");
+                            record.setWaterClose(0);
+                            record.setWaterOpen(0);
+                            record.setOpening(0);
+                            record.setClosing(0);
+                            record.setAmount(0);
+                            record.setWaterSupply(0);
+                            montlyRecords.add(record);
+                        }else{
+                            montlyRecords = task.getResult().toObjects(Record.class);
+                        }
+                            onFirebaseRespond.onGettingMontlyData(montlyRecords);
+
+                    }else{
+
+                        onFirebaseRespond.onGettingMontlyData(null);
+                    }
+                }
+            });
+        }
+
+
     public void getAllAttendanceOfUser(Attendance attendance){
 
         firebaseFirestore.collection(Constants.ATTENDANCE)
@@ -133,6 +258,8 @@ public class DashboardFBRepository {
                 });
 
     }
+
+
     private void getAttendance(List<User> workers,String plantName) {
         Date today = Helper.getTodayDateObject();
         List<Attendance> attendances = new ArrayList<>();
@@ -168,6 +295,9 @@ public class DashboardFBRepository {
 
 
     }
+
+
+
 
     public void addNewUnit(String plantName,String unitName,String type, int opening,int waterOpening){
 
@@ -289,5 +419,8 @@ public class DashboardFBRepository {
         void onGettingTodayRecord(List<Record> records,int noOfUnits);
         void onGettingAttendaceList(List<Attendance> attendances);
         void onGettingAttendanceOfUser(List<Attendance> attendances);
+        void onGettingMontlyData(List<Record> monthlyRecords);
+        void onPlantReportLoaded(PlantReport plantReport);
+
     }
 }

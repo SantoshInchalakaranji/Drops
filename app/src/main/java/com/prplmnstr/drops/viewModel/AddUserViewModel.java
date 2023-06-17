@@ -21,8 +21,10 @@ import java.util.List;
 public class AddUserViewModel extends ViewModel implements AddUserFragmentRepository.OnFirebaseRespond {
     private AddUserFragmentRepository repository;
     private MutableLiveData<Boolean> result;
+    private MutableLiveData<Boolean> deleteResult;
     private MutableLiveData<List<User>> workers;
     private MutableLiveData<List<User>> investors;
+
 
 
     public AddUserViewModel( ) {
@@ -30,12 +32,18 @@ public class AddUserViewModel extends ViewModel implements AddUserFragmentReposi
         this.result = new MutableLiveData<>();
         this.workers = new MutableLiveData<>();
         this.investors = new MutableLiveData<>();
+        this.deleteResult = new MutableLiveData<>();
 
     }
 
     public MutableLiveData<Boolean> addUser(User user,boolean newUser){
         repository.addNewUser(user,newUser);
         return result;
+    }
+
+    public MutableLiveData<Boolean> getDeleteResult(User user, Context context){
+        repository.deleteUser(user,context);
+        return deleteResult;
     }
     public MutableLiveData<List<User>> getWorkers(){
         repository.getWorkers();
@@ -91,6 +99,11 @@ public class AddUserViewModel extends ViewModel implements AddUserFragmentReposi
     @Override
     public void onWorkersLoaded(List<User> worker) {
         this.workers.setValue(worker);
+    }
+
+    @Override
+    public void onUserDeleted(Boolean result) {
+        this.deleteResult.setValue(result);
     }
 
 

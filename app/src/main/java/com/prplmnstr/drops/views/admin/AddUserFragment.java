@@ -1,7 +1,9 @@
 package com.prplmnstr.drops.views.admin;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 
@@ -16,34 +18,29 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CalendarView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prplmnstr.drops.R;
 import com.prplmnstr.drops.adapters.DashboardRecyclerAdapter;
-import com.prplmnstr.drops.databinding.AddPlantDialogBinding;
 import com.prplmnstr.drops.databinding.AddUserDialogBinding;
 import com.prplmnstr.drops.databinding.FragmentAddUserBinding;
-import com.prplmnstr.drops.databinding.FragmentSignInBinding;
 import com.prplmnstr.drops.models.RecyclerModel;
 import com.prplmnstr.drops.models.User;
 import com.prplmnstr.drops.utils.Constants;
 import com.prplmnstr.drops.viewModel.AddUserViewModel;
-import com.prplmnstr.drops.viewModel.AuthViewModel;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -67,6 +64,8 @@ public class AddUserFragment extends Fragment implements NavController.OnDestina
     private List<RecyclerModel> workerList = new ArrayList<>();
     private List<RecyclerModel> investorList = new ArrayList<>();
     private List<User> userList = new ArrayList<>();
+    private List<User> workerListType = new ArrayList<>();
+    private List<User> investorListType = new ArrayList<>();
 
 
     @Override
@@ -86,7 +85,7 @@ public class AddUserFragment extends Fragment implements NavController.OnDestina
         try{
 
             initialize_loader();
-            loadDialog();
+
             loader.show();
             relaod_investors();
             reload_workers();
@@ -94,12 +93,18 @@ public class AddUserFragment extends Fragment implements NavController.OnDestina
 
 
 
-
+            binding.backButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    NavDirections action = AddUserFragmentDirections.actionAddUserFragmentToDashboardFragment(plantName);
+                    navController.navigate(action);
+                }
+            });
 
             binding.addUserButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    addUserDialog.show();
+                   loadDialog();
                 }
             });
 
@@ -114,7 +119,6 @@ public class AddUserFragment extends Fragment implements NavController.OnDestina
 
 
 
-
     }
 
     private void reload_workers() {
@@ -122,6 +126,7 @@ public class AddUserFragment extends Fragment implements NavController.OnDestina
             @Override
             public void onChanged(List<User> worker) {
                 if (worker != null) {
+                    workerListType = worker;
                     userList.addAll(worker);
                     workerList = viewModel.mapUsersToRecyclerItem(worker, plantName);
                 }
@@ -147,6 +152,7 @@ public class AddUserFragment extends Fragment implements NavController.OnDestina
             @Override
             public void onChanged(List<User> investor) {
                 if(investor!=null) {
+                    investorListType = investor;
                     userList.addAll(investor);
                     investorList = viewModel.mapUsersToRecyclerItem(investor, plantName);
                 }
@@ -187,7 +193,7 @@ public class AddUserFragment extends Fragment implements NavController.OnDestina
 
         addUserDialog.setCancelable(true);
         addUserDialog.getWindow().getAttributes().windowAnimations = R.style.animation_popup;
-
+        addUserDialog.show();
         // set spinner
         spinnerAdapter = new ArrayAdapter(getActivity(),
                 android.R.layout.simple_spinner_item,
@@ -266,7 +272,7 @@ public class AddUserFragment extends Fragment implements NavController.OnDestina
                     addUserDialog.dismiss();
                     Toast.makeText(getActivity(), "User Added", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), "Something went wrong...", Toast.LENGTH_SHORT).show();
                 }
                 loader.dismiss();
             }
@@ -297,6 +303,8 @@ public class AddUserFragment extends Fragment implements NavController.OnDestina
         workerRV.setLayoutManager(new LinearLayoutManager(getActivity()));
         workerRV.setHasFixedSize(true);
         workerAdapter = new DashboardRecyclerAdapter();
+
+
         workerRV.setAdapter(workerAdapter);
         //For random image resourse
         final TypedArray imgs = getResources().obtainTypedArray(R.array.workers);
@@ -310,6 +318,54 @@ public class AddUserFragment extends Fragment implements NavController.OnDestina
         workerAdapter.setRecyclerItems(workerList);
 
 
+        workerAdapter.setListener(new DashboardRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerModel recyclerModel, int clickPosition) {
+
+            }
+
+            @Override
+            public void onItemLongClick(RecyclerModel worker, int clickPosition) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Remove worker?");
+                builder.setMessage("Do you want to remove "+ worker.getSubTitleName()+"?");
+
+// Set positive button
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Handle positive button click
+                        // Do something...
+
+                        loader.show();
+                        viewModel.getDeleteResult(workerListType.get(clickPosition),getContext())
+                                .observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+                                    @Override
+                                    public void onChanged(Boolean result) {
+                                        reload_workers();
+                                        loader.dismiss();
+                                    }
+                                });
+                    }
+                });
+
+// Set negative button
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Handle negative button click
+                        // Do something...
+                        dialog.dismiss();
+                    }
+                });
+
+// Create and show the AlertDialog
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
+
+
 
     }
     private void loadInvestors() {
@@ -320,6 +376,7 @@ public class AddUserFragment extends Fragment implements NavController.OnDestina
         investorRV.setLayoutManager(new LinearLayoutManager(getActivity()));
         investorRV.setHasFixedSize(true);
         investorAdapter = new DashboardRecyclerAdapter();
+
         investorRV.setAdapter(investorAdapter);
         //For random image resourse
         final TypedArray imgs = getResources().obtainTypedArray(R.array.investor);
@@ -332,6 +389,52 @@ public class AddUserFragment extends Fragment implements NavController.OnDestina
         }
         investorAdapter.setRecyclerItems(investorList);
 
+        investorAdapter.setListener(new DashboardRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerModel recyclerModel, int clickPosition) {
+
+            }
+
+            @Override
+            public void onItemLongClick(RecyclerModel recyclerModel, int clickPosition) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Remove Investor?");
+                builder.setMessage("Do you want to remove "+ recyclerModel.getHeaderName()+"?");
+
+// Set positive button
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Handle positive button click
+                        // Do something...
+                        loader.show();
+                        viewModel.getDeleteResult(investorListType.get(clickPosition),getContext())
+                                .observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+                                    @Override
+                                    public void onChanged(Boolean result) {
+                                        relaod_investors();
+                                        loader.dismiss();
+                                    }
+                                });
+                    }
+                });
+
+// Set negative button
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Handle negative button click
+                        // Do something...
+                        dialog.dismiss();
+                    }
+                });
+
+// Create and show the AlertDialog
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
 
 
     }

@@ -51,6 +51,18 @@ public class DashboardRecyclerAdapter extends RecyclerView.Adapter<DashboardRecy
             super(listViewItemBinding.getRoot());
             this.listViewItemBinding = listViewItemBinding;
 
+
+            listViewItemBinding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    int clickedPosition = getAdapterPosition();
+                    if (listener!= null && clickedPosition != RecyclerView.NO_POSITION){
+                        listener.onItemLongClick(recyclerItems.get(clickedPosition),clickedPosition);
+                    }
+                    return true;
+                }
+            });
+
             listViewItemBinding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -78,8 +90,11 @@ public class DashboardRecyclerAdapter extends RecyclerView.Adapter<DashboardRecy
         notifyDataSetChanged();
     }
 
+
+
     public interface OnItemClickListener{
         void onItemClick(RecyclerModel recyclerModel,int clickPosition);
+        void onItemLongClick(RecyclerModel recyclerModel,int clickPosition);
 
     }
 

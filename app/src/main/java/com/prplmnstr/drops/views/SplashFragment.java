@@ -1,27 +1,27 @@
 package com.prplmnstr.drops.views;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
+        import android.content.Context;
+        import android.content.SharedPreferences;
+        import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+        import androidx.annotation.NonNull;
+        import androidx.annotation.Nullable;
+        import androidx.fragment.app.Fragment;
+        import androidx.lifecycle.ViewModelProvider;
+        import androidx.lifecycle.ViewModelStoreOwner;
+        import androidx.navigation.NavController;
+        import androidx.navigation.Navigation;
 
-import android.os.Handler;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
+        import android.os.Handler;
+        import android.view.LayoutInflater;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.prplmnstr.drops.R;
-import com.prplmnstr.drops.utils.Constants;
-import com.prplmnstr.drops.viewModel.AuthViewModel;
+        import com.google.firebase.auth.FirebaseAuth;
+        import com.prplmnstr.drops.R;
+        import com.prplmnstr.drops.utils.Constants;
+        import com.prplmnstr.drops.viewModel.AuthViewModel;
 
 public class SplashFragment extends Fragment {
 
@@ -46,12 +46,20 @@ public class SplashFragment extends Fragment {
         viewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getActivity().getApplication())).get(AuthViewModel.class);
         navController = Navigation.findNavController(view);
-        sharedPreferences = getContext().getSharedPreferences(Constants.SHARED_PREFERENCE, Context.MODE_PRIVATE);
+        try {
 
-        boolean key = sharedPreferences.contains(Constants.SAVED_USER_TYPE);
-        if(key){
-            userType = sharedPreferences.getString(Constants.SAVED_USER_TYPE,null);
+            sharedPreferences = getContext().getSharedPreferences(Constants.SHARED_PREFERENCE, Context.MODE_PRIVATE);
+
+            boolean key = sharedPreferences.contains(Constants.SAVED_USER_TYPE);
+            if(key){
+                userType = sharedPreferences.getString(Constants.SAVED_USER_TYPE,null);
+            }else{
+                userType = null;
+            }
+        }catch (Exception e){
+            Toast.makeText(getContext(), "Please reload the app", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override
@@ -71,9 +79,12 @@ public class SplashFragment extends Fragment {
                             } else if (userType.equals(Constants.WORKER)) {
 
                                 navController.navigate(R.id.action_splashFragment_to_workerActivity);
-
+                                getActivity().finish();
                             } else if (userType.equals(Constants.INVESTOR)) {
+                                // navController.popBackStack();
                                 navController.navigate(R.id.action_splashFragment_to_investorActivity);
+                                getActivity().finish();
+
                             }
                         }
 
@@ -81,10 +92,32 @@ public class SplashFragment extends Fragment {
                         navController.navigate(R.id.action_splashFragment_to_signInFragment);
                     }
                 }catch (Exception e){
-                   // Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }
-        },1000);
+        },3000);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

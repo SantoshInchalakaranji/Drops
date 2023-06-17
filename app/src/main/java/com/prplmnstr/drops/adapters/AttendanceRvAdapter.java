@@ -112,20 +112,20 @@ public class AttendanceRvAdapter extends RecyclerView.Adapter<AttendanceRvAdapte
             attendanceItemBinding.threeDots.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    popupMenu = new PopupMenu(context,view);
-                    MenuInflater inflater = popupMenu.getMenuInflater();
-                    inflater.inflate(R.menu.delete_worker_menu, popupMenu.getMenu());
-                    popupMenu.show();
-
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                           listener.onDeleteRequest(attendanceItemBinding.getAttendance());
-
-
-                            return true;
-                        }
-                    });
+//                    popupMenu = new PopupMenu(context,view);
+//                    MenuInflater inflater = popupMenu.getMenuInflater();
+//                    inflater.inflate(R.menu.delete_worker_menu, popupMenu.getMenu());
+//                    popupMenu.show();
+//
+//                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                        @Override
+//                        public boolean onMenuItemClick(MenuItem menuItem) {
+//                           listener.onDeleteRequest(attendanceItemBinding.getAttendance());
+//
+//
+//                            return true;
+//                        }
+//                    });
                 }
             });
 

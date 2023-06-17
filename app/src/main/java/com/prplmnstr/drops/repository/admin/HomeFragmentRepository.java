@@ -9,8 +9,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.prplmnstr.drops.models.Date;
 import com.prplmnstr.drops.models.Plant;
+import com.prplmnstr.drops.models.PlantReport;
 import com.prplmnstr.drops.utils.Constants;
+import com.prplmnstr.drops.utils.Helper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,12 +36,18 @@ public class HomeFragmentRepository  {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
+
                             onFirebaseRespond.onPlantAdded(true);
                         }else{
                             onFirebaseRespond.onPlantAdded(false);
                         }
                     }
                 });
+        Date today = Helper.getTodayDateObject();
+        PlantReport plantReport = new PlantReport(plant.getPlantName(),"-",0,0,0,0,0, today.getDay(), today.getMonth(), today.getYear());
+        firebaseFirestore.collection(Constants.PLANT_REPORTS)
+                .document(plant.getPlantName()+"_"+today.getDateInStringFormat())
+                .set(plantReport);
 
     }
 

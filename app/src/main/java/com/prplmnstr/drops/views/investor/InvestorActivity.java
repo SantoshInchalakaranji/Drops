@@ -1,8 +1,10 @@
-package com.prplmnstr.drops;
+package com.prplmnstr.drops.views.investor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.prplmnstr.drops.R;
 
 public class InvestorActivity extends AppCompatActivity {
 

@@ -1,5 +1,6 @@
 package com.prplmnstr.drops.viewModel;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.util.Log;
@@ -11,6 +12,7 @@ import com.prplmnstr.drops.R;
 import com.prplmnstr.drops.models.Attendance;
 import com.prplmnstr.drops.models.Date;
 import com.prplmnstr.drops.models.Plant;
+import com.prplmnstr.drops.models.PlantReport;
 import com.prplmnstr.drops.models.Record;
 import com.prplmnstr.drops.models.RecyclerModel;
 import com.prplmnstr.drops.repository.admin.DashboardFBRepository;
@@ -39,6 +41,8 @@ public class DashboardViewModel extends ViewModel implements DashboardFBReposito
     private MutableLiveData<List<Record>> records;
     private MutableLiveData<List<Attendance>> attendanceList;
     private MutableLiveData<List<Attendance>> attendanceOfUser;
+    private MutableLiveData<List<Record>> monthlyData;
+    private MutableLiveData<PlantReport> plantReport;
     public DashboardViewModel(){
         repository = new DashboardFBRepository(this);
         result = new MutableLiveData<>();
@@ -49,6 +53,8 @@ public class DashboardViewModel extends ViewModel implements DashboardFBReposito
         attendanceAdded = new MutableLiveData<>();
         deleteTheWorker = new MutableLiveData<>();
         attendanceOfUser = new MutableLiveData<>();
+        monthlyData = new MutableLiveData<>();
+        plantReport = new MutableLiveData<>();
 
 
     }
@@ -73,20 +79,30 @@ public class DashboardViewModel extends ViewModel implements DashboardFBReposito
         return records;
     }
 
+    public MutableLiveData<List<Record>> getMonthlyData(String plantName){
+        repository.getMonthlyData(plantName);
+        return monthlyData;
+    }
+
+    public MutableLiveData<PlantReport> getPlantReport(String plantName){
+        repository.getPlantReport(plantName);
+        return plantReport;
+    }
+
     public MutableLiveData<Integer> getNoOfUnits(){
         return noOfUnits;
     }
 
-    public MutableLiveData<Boolean> addAttendance(Attendance attendance){
+    public MutableLiveData<Boolean> addAttendance(Attendance attendance, Context context){
 
-        repository.saveAttendance(attendance);
+        repository.saveAttendance(attendance,context);
         return attendanceAdded;
     }
-    public MutableLiveData<Boolean> deleteWorker(Attendance attendance){
-
-        repository.saveAttendance(attendance);
-        return deleteTheWorker;
-    }
+//    public MutableLiveData<Boolean> deleteWorker(Attendance attendance){
+//
+//        repository.saveAttendance(attendance,);
+//        return deleteTheWorker;
+//    }
     public MutableLiveData<Integer> noOfUnits(String plantName){
         repository.NoOfUnits(plantName);
         return unitNumber;
@@ -108,7 +124,38 @@ public class DashboardViewModel extends ViewModel implements DashboardFBReposito
         map.put("absent", String.valueOf(absent));
         return map;
     }
+    public void savePlantReport(PlantReport plantReport){
+            repository.savePlantReport(plantReport);
+    }
 
+    public Map<String,String> getMonthlySum(List<Record> records){
+        int sum = 0;
+        int waterSupply = 0;
+        for(Record data : records){
+           sum += data.getAmount();
+           waterSupply+= data.getWaterSupply();
+        }
+        Map<String, String > map = new HashMap<>();
+        map.put("sum", String.valueOf(sum));
+        map.put("waterSupply", String.valueOf(waterSupply));
+        return map;
+    }
+
+    private float calculateTextSize(String text) {
+        int textLength = text.length();
+        if(textLength<7 ){
+            return 24;
+        }
+        float baseTextSize = 26; // Set your desired base text size here
+        float textSizeIncrement = 1; // Set the increment value for each character
+
+        float calculatedTextSize = baseTextSize - (textLength * textSizeIncrement);
+        if (calculatedTextSize < 12) {
+            calculatedTextSize = 12; // Set a minimum text size to avoid extremely small text
+        }
+
+        return calculatedTextSize;
+    }
     public Map<String,Integer> getBlueBoxDetails(List<Record> records) {
         int sum = 0;
         int waterSupply =0;
@@ -164,5 +211,15 @@ public class DashboardViewModel extends ViewModel implements DashboardFBReposito
     @Override
     public void onGettingAttendanceOfUser(List<Attendance> attendances) {
         this.attendanceOfUser.setValue(attendances);
+    }
+
+    @Override
+    public void onGettingMontlyData(List<Record> monthlyRecords) {
+        this.monthlyData.setValue(monthlyRecords);
+    }
+
+    @Override
+    public void onPlantReportLoaded(PlantReport plantReport) {
+        this.plantReport.setValue(plantReport);
     }
 }

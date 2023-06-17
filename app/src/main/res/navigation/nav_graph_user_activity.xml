@@ -11,21 +11,12 @@
         android:label="fragment_worker_task"
         tools:layout="@layout/fragment_worker_task" >
         <action
-            android:id="@+id/action_workerTaskFragment_to_workerProfileFragment"
-            app:destination="@id/workerProfileFragment" />
+            android:id="@+id/action_workerTaskFragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
     </fragment>
-    <fragment
-        android:id="@+id/workerProfileFragment"
-        android:name="com.prplmnstr.drops.views.worker.WorkerProfileFragment"
-        android:label="fragment_worker_profile"
-        tools:layout="@layout/fragment_worker_profile" >
-        <action
-            android:id="@+id/action_workerProfileFragment_to_workerTaskFragment"
-            app:destination="@id/workerTaskFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/workerHomeFragment"
-        android:name="com.prplmnstr.drops.views.worker.WorkerHomeFragment"
-        android:label="fragment_worker_home"
-        tools:layout="@layout/fragment_worker_home" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.prplmnstr.drops.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
 </navigation>

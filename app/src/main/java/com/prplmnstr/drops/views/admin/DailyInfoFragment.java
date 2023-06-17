@@ -10,6 +10,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,7 +43,7 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class DailyInfoFragment extends Fragment {
+public class DailyInfoFragment extends Fragment implements NavController.OnDestinationChangedListener{
 
     private FragmentDailyInfoBinding binding;
     private DailyInfoViewModel viewModel;
@@ -52,6 +56,7 @@ public class DailyInfoFragment extends Fragment {
     private Dialog loader;
     private final String  plantName = DashboardFragment.PLANT_NAME;
     private int taskCount;
+    private NavController navController;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,9 +81,20 @@ public class DailyInfoFragment extends Fragment {
         initialize_loader();
         loader.show();
         initialize_recycler();
-
+        navController = Navigation.findNavController(view);
+        navController.addOnDestinationChangedListener(this);
 
         load_recycler_items(plantName,Helper.getTodayDateObject());
+
+
+        binding.backButtonDashboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigateUp();
+            }
+        });
+
+
 
         binding.spinner.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,8 +172,15 @@ public class DailyInfoFragment extends Fragment {
             public void onItemClick(RecyclerModel recyclerModel, int clickPosition) {
                 loadDialog(records.get(clickPosition));
             }
+
+            @Override
+            public void onItemLongClick(RecyclerModel recyclerModel, int clickPosition) {
+
+            }
         });
     }
+
+
 
     private void loadDialog(Record record) {
         itemDetailsDialogBinding = ItemDetailsDialogBinding.inflate(LayoutInflater.from(getContext()));
@@ -232,5 +255,10 @@ public class DailyInfoFragment extends Fragment {
 
         // Show the date picker dialog
         datePickerDialog.show();
+    }
+
+    @Override
+    public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
+
     }
 }

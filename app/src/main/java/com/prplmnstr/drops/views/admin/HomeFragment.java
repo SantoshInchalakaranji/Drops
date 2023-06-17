@@ -30,12 +30,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -152,6 +155,44 @@ public class HomeFragment extends Fragment {
                 addPlantDialog.show();
             }
         });
+
+
+
+
+
+            binding.logoutImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PopupMenu popupMenu = new PopupMenu(getContext(), view);
+                    MenuInflater inflater = popupMenu.getMenuInflater();
+                    inflater.inflate(R.menu.logout_menu, popupMenu.getMenu());
+                    popupMenu.show();
+
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            FirebaseAuth firebaseAuth =   FirebaseAuth.getInstance();
+                            firebaseAuth.signOut();
+                            Toast.makeText(getContext(), "Logged out", Toast.LENGTH_SHORT).show();
+
+
+
+//                            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCE, getContext().MODE_PRIVATE);
+//                            SharedPreferences.Editor editor = sharedPreferences.edit();
+//                            editor.remove(Constants.SAVED_USER_TYPE);
+//                            editor.apply();
+
+                            navController.navigate(R.id.action_homeFragment_to_signInFragment);
+//                            Intent intent = new Intent(getActivity(), MainActivity.class);
+//                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                            startActivity(intent);
+                            return true;
+                        }
+                    });
+                }
+            });
+
+
         } catch (Exception e) {
             Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }

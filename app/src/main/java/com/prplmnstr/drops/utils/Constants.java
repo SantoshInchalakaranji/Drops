@@ -17,6 +17,7 @@ public  class Constants {
     public  static  int ABSENT = 0;
     public  static  int NO_ATTENDANCE = 2;
     public  static  String  ATTENDANCE = "Attendances";
+    public  static  String  PLANT_REPORTS = "PlantReports";
     public static String  OUTLETS = "Outlets";
     public static String  PLANTS = "Plants";
     public static String  NAME = "name";

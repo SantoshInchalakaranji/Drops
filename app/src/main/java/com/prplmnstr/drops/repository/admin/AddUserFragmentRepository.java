@@ -1,5 +1,6 @@
 package com.prplmnstr.drops.repository.admin;
 
+import android.content.Context;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -147,6 +148,28 @@ public class AddUserFragmentRepository {
 
     }
 
+    public void deleteUser(User user, Context context){
+
+
+        firebaseFirestore.collection(user.getUserType())
+                .document(user.getPlantName()+"_"+user.getEmail())
+                .delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(context, "User Deleted", Toast.LENGTH_SHORT).show();
+                            onFirebaseRespond.onUserDeleted(true);
+                        }else{
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                            onFirebaseRespond.onUserDeleted(false);
+                        }
+                    }
+                });
+
+
+    }
+
     public void signUpUser(String email, String password){
         firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -166,6 +189,8 @@ public class AddUserFragmentRepository {
         void onUserAdded(Boolean result);
         void onInvetorLoaded(List<User> investors);
         void onWorkersLoaded(List<User> worker);
+
+        void onUserDeleted(Boolean result);
 
 
 
