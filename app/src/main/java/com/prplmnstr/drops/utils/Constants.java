@@ -27,6 +27,7 @@ public  class Constants {
     public static String  MOBILE_UNIT = "Mobile Unit";
     public static String  WORKER = "Worker";
     public static String  INVESTOR = "Investor";
+    public static String  EXPENSES = "Expenses";
     public static String  ADMIN = "Admin";
     public static String    PLANT_NAME = "plantName";
     public static String    UNIT_NAME = "unitName";

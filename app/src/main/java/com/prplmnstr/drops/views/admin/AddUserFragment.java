@@ -122,7 +122,7 @@ public class AddUserFragment extends Fragment implements NavController.OnDestina
     }
 
     private void reload_workers() {
-        viewModel.getWorkers().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
+        viewModel.getWorkers(plantName).observe(getViewLifecycleOwner(), new Observer<List<User>>() {
             @Override
             public void onChanged(List<User> worker) {
                 if (worker != null) {
@@ -148,7 +148,7 @@ public class AddUserFragment extends Fragment implements NavController.OnDestina
     }
 
     private void relaod_investors() {
-        viewModel.getInvestors().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
+        viewModel.getInvestors(plantName).observe(getViewLifecycleOwner(), new Observer<List<User>>() {
             @Override
             public void onChanged(List<User> investor) {
                 if(investor!=null) {
@@ -220,7 +220,7 @@ public class AddUserFragment extends Fragment implements NavController.OnDestina
             @Override
             public void onClick(View view) {
 
-                userEmail = addUserDialogBinding.emailET.getText().toString().trim();
+                userEmail = addUserDialogBinding.emailET.getText().toString().trim().toLowerCase();
 
 
                 User oldUser = viewModel.isEmailExists(userList,userEmail);
@@ -265,15 +265,12 @@ public class AddUserFragment extends Fragment implements NavController.OnDestina
     }
 
     private void addUser(User user) {
-        viewModel.addUser(user,newUser).observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+        Toast.makeText(getActivity(), "Adding user...", Toast.LENGTH_LONG).show();
+        viewModel.addUser(user,newUser,getContext()).observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean result) {
-                if(result){
-                    addUserDialog.dismiss();
-                    Toast.makeText(getActivity(), "User Added", Toast.LENGTH_SHORT).show();
-                }else{
-                    //Toast.makeText(getActivity(), "Something went wrong...", Toast.LENGTH_SHORT).show();
-                }
+
+                addUserDialog.dismiss();
                 loader.dismiss();
             }
         });
@@ -338,6 +335,7 @@ public class AddUserFragment extends Fragment implements NavController.OnDestina
                         // Do something...
 
                         loader.show();
+                       // Toast.makeText(getContext(), workerListType.get(clickPosition).getPlantName(), Toast.LENGTH_SHORT).show();
                         viewModel.getDeleteResult(workerListType.get(clickPosition),getContext())
                                 .observe(getViewLifecycleOwner(), new Observer<Boolean>() {
                                     @Override

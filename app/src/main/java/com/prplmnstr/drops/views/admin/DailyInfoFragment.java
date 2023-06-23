@@ -24,6 +24,7 @@ import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.prplmnstr.drops.MainActivity;
 import com.prplmnstr.drops.R;
 import com.prplmnstr.drops.adapters.DashboardRecyclerAdapter;
 import com.prplmnstr.drops.databinding.AddRecordDialogBinding;
@@ -34,6 +35,7 @@ import com.prplmnstr.drops.models.Date;
 import com.prplmnstr.drops.models.Record;
 import com.prplmnstr.drops.models.RecyclerModel;
 import com.prplmnstr.drops.repository.admin.DailyInfoRepository;
+import com.prplmnstr.drops.utils.CreatePdfReport;
 import com.prplmnstr.drops.utils.Helper;
 import com.prplmnstr.drops.viewModel.DailyInfoViewModel;
 import com.prplmnstr.drops.viewModel.TaskFragmentViewModel;
@@ -57,11 +59,13 @@ public class DailyInfoFragment extends Fragment implements NavController.OnDesti
     private final String  plantName = DashboardFragment.PLANT_NAME;
     private int taskCount;
     private NavController navController;
+    private Date recordDate;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider((ViewModelStoreOwner) this, (ViewModelProvider.Factory) ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getActivity().getApplication())).get(DailyInfoViewModel.class);
+
     }
 
     @Override
@@ -83,8 +87,8 @@ public class DailyInfoFragment extends Fragment implements NavController.OnDesti
         initialize_recycler();
         navController = Navigation.findNavController(view);
         navController.addOnDestinationChangedListener(this);
-
-        load_recycler_items(plantName,Helper.getTodayDateObject());
+        recordDate = Helper.getTodayDateObject();
+        load_recycler_items(plantName,recordDate);
 
 
         binding.backButtonDashboard.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +104,16 @@ public class DailyInfoFragment extends Fragment implements NavController.OnDesti
             @Override
             public void onClick(View view) {
                 showDatePickerDialog();
+            }
+        });
+
+        binding.downloadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Downloading...", Toast.LENGTH_SHORT).show();
+                CreatePdfReport createPdfReport = new CreatePdfReport(getContext(),getResources(),getActivity());
+
+                createPdfReport.downloadableData(plantName,recordDate);
             }
         });
     }
@@ -236,17 +250,17 @@ public class DailyInfoFragment extends Fragment implements NavController.OnDesti
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         // Update the selected date in your UI
-                        Date date = new Date();
-                        date.setDay(day);
-                        date.setMonth(month+1);
-                        date.setYear(year);
-                        date.setDateInStringFormat(Helper.getDateInStringFormat(day,month,year));
-                        binding.spinner.setText(date.getDateInStringFormat());
-                        Toast.makeText(getActivity(), ""+date.getDay()+"-"+date.getMonth(), Toast.LENGTH_SHORT).show();
+                        recordDate = new Date();
+                        recordDate.setDay(day);
+                        recordDate.setMonth(month+1);
+                        recordDate.setYear(year);
+                        recordDate.setDateInStringFormat(Helper.getDateInStringFormat(day,month,year));
+                        binding.spinner.setText(recordDate.getDateInStringFormat());
+
 
                         try {
                             loader.show();
-                            load_recycler_items(plantName, date);
+                            load_recycler_items(plantName, recordDate);
                         }catch (Exception e){
                             Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         }

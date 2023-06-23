@@ -346,6 +346,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <LinearLayout
+                        android:id="@+id/firstRow"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -363,7 +364,7 @@
                             android:background="@drawable/green_bg"
                             android:gravity="center"
                             android:orientation="vertical"
-                            android:padding="8dp"
+
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
@@ -385,7 +386,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="4dp"
-                                android:text="4000"
+                                android:text="0"
                                 android:textAppearance="@style/LargeText"
 
                                 android:textColor="@color/white"
@@ -426,7 +427,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="4dp"
-                                android:text="10' 9'"
+                                android:text="-"
                                 android:textAppearance="@style/LargeText"
                                 android:textColor="@color/white"
                                 android:textSize="18sp"
@@ -467,7 +468,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="4dp"
-                                android:text="2"
+                                android:text="0"
                                 android:textAppearance="@style/LargeText"
                                 android:textColor="@color/white"
                                 android:textSize="18sp"
@@ -479,6 +480,139 @@
 
                     </LinearLayout>
 
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/firstRow">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_margin="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/green_bg"
+                            android:gravity="center"
+                            android:orientation="vertical"
+
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+
+                            <TextView
+                                android:id="@+id/meterClose"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="4dp"
+                                android:text="Meter"
+                                android:textAppearance="@style/SubTitleStyleSemiBold"
+                                android:textColor="@color/white"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/plantReportDate" />
+
+                            <TextView
+                                android:id="@+id/meterCloseNumber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="4dp"
+                                android:text="0"
+                                android:textAppearance="@style/LargeText"
+                                android:textColor="@color/white"
+                                android:textSize="18sp"
+                                app:layout_constraintEnd_toEndOf="@+id/flowTV"
+                                app:layout_constraintStart_toStartOf="@+id/flowTV"
+                                app:layout_constraintTop_toBottomOf="@+id/flowTV" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_margin="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/gold_bg"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+
+                            <TextView
+                                android:id="@+id/usage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+                                android:padding="4dp"
+                                android:text="Elc Usage"
+                                android:textAppearance="@style/SubTitleStyleSemiBold"
+                                android:textColor="@color/white"
+                                app:layout_constraintEnd_toStartOf="@+id/tds"
+                                app:layout_constraintStart_toEndOf="@+id/flowTV"
+                                app:layout_constraintTop_toTopOf="@+id/flowTV" />
+
+                            <TextView
+                                android:id="@+id/usageNumber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="4dp"
+                                android:text="0"
+                                android:textAppearance="@style/LargeText"
+                                android:textColor="@color/white"
+                                android:textSize="18sp"
+                                app:layout_constraintEnd_toEndOf="@+id/Pressure"
+                                app:layout_constraintStart_toStartOf="@+id/Pressure"
+                                app:layout_constraintTop_toBottomOf="@+id/Pressure" />
+
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_margin="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/orange_bg"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+
+                            <TextView
+                                android:id="@+id/expense"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+                                android:padding="4dp"
+                                android:text="Expense"
+                                android:textAppearance="@style/SubTitleStyleSemiBold"
+                                android:textColor="@color/white"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/flowTV" />
+
+                            <TextView
+                                android:id="@+id/expenseNumber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="4dp"
+                                android:text="0"
+                                android:textAppearance="@style/LargeText"
+                                android:textColor="@color/white"
+                                android:textSize="18sp"
+                                app:layout_constraintEnd_toEndOf="@+id/tds"
+                                app:layout_constraintStart_toStartOf="@+id/tds"
+                                app:layout_constraintTop_toBottomOf="@+id/tds" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -527,7 +661,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="4dp"
-                            android:text="Amount"
+                            android:text="Cash InHand"
                             android:textAppearance="@style/SubTitleStyleSemiBold"
                             android:textColor="@color/white"
                             app:layout_constraintStart_toStartOf="parent"
@@ -718,6 +852,7 @@
                 android:textAppearance="@style/RegularStyle"
                 android:textColor="#537FFD"
                 android:textSize="13sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toTopOf="@+id/monthReport" />
 
@@ -756,8 +891,146 @@
                 android:textAppearance="@style/RegularStyle"
                 android:textColor="#537FFD"
                 android:textSize="13sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toTopOf="@+id/plantReportTV" />
+
+
+            <TextView
+                android:id="@+id/expenseTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/segeo_bold"
+                android:text="Expenses"
+                android:textAppearance="@style/RegularStyle"
+                android:textColor="#BDBDBE"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@+id/cardView"
+                app:layout_constraintTop_toBottomOf="@+id/plantCard" />
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/expenseCard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:elevation="4dp"
+                android:visibility="visible"
+
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
+                app:layout_constraintTop_toBottomOf="@+id/expenseTV">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:clipToPadding="false"
+                    android:paddingStart="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/totalCash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="4dp"
+                        android:text="Total Cash"
+                        android:textAppearance="@style/SubTitleStyleSemiBold"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/totalCashNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="4dp"
+                        android:text="0"
+                        android:textAppearance="@style/LargeText"
+
+                        android:textSize="18sp"
+
+                        app:layout_constraintEnd_toEndOf="@+id/totalCash"
+                        app:layout_constraintStart_toStartOf="@+id/totalCash"
+                        app:layout_constraintTop_toBottomOf="@+id/totalCash" />
+
+
+                    <TextView
+                        android:id="@+id/totalExpense"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+
+                        android:padding="4dp"
+                        android:text="Expense"
+                        android:textAppearance="@style/SubTitleStyleSemiBold"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toEndOf="@+id/totalCash"
+                        app:layout_constraintTop_toTopOf="@+id/totalCash" />
+
+                    <TextView
+                        android:id="@+id/totalExpenseNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="4dp"
+                        android:text="0"
+                        android:textAppearance="@style/LargeText"
+
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="@+id/totalExpense"
+                        app:layout_constraintStart_toStartOf="@+id/totalExpense"
+                        app:layout_constraintTop_toBottomOf="@+id/totalExpense" />
+
+
+                    <TextView
+                        android:id="@+id/inHand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+
+                        android:padding="4dp"
+                        android:text="In Hand Cash"
+                        android:textAppearance="@style/SubTitleStyleSemiBold"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toEndOf="@+id/totalExpense"
+                        app:layout_constraintTop_toTopOf="@+id/totalExpense" />
+
+                    <TextView
+                        android:id="@+id/inHandNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="4dp"
+                        android:text="0"
+                        android:textAppearance="@style/LargeText"
+
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="@+id/inHand"
+                        app:layout_constraintStart_toStartOf="@+id/inHand"
+                        app:layout_constraintTop_toBottomOf="@+id/inHand" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/expenseRV"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:nestedScrollingEnabled="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/totalCash"
+                        app:layout_constraintTop_toBottomOf="@+id/totalExpenseNumber" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/downloadButton"
@@ -772,7 +1045,7 @@
                 app:backgroundTint="@color/black"
                 app:layout_constraintLeft_toLeftOf="@+id/guideline2"
                 app:layout_constraintRight_toRightOf="@id/guideline3"
-                app:layout_constraintTop_toBottomOf="@id/plantCard" />
+                app:layout_constraintTop_toBottomOf="@id/expenseCard" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

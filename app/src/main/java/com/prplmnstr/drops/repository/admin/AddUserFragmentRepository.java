@@ -30,8 +30,9 @@ public class AddUserFragmentRepository {
         this.onFirebaseRespond = onFirebaseRespond;
     }
 
-    public void getInvestors(){
+    public void getInvestors(String plantName){
         firebaseFirestore.collection(Constants.INVESTOR)
+                .whereEqualTo(Constants.PLANT_NAME,plantName)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -52,8 +53,10 @@ public class AddUserFragmentRepository {
                     }
                 });
     }
-    public void getWorkers(){
+    public void getWorkers(String plantName){
         firebaseFirestore.collection(Constants.WORKER)
+                .whereEqualTo(Constants.PLANT_NAME,plantName)
+
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -75,7 +78,7 @@ public class AddUserFragmentRepository {
                 });
     }
 
-    public void getAdminPassword(){
+    public void getAdminPassword(Context context){
         firebaseFirestore.collection("admin")
                 .document("password")
                 .get()
@@ -84,22 +87,25 @@ public class AddUserFragmentRepository {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if(task.isSuccessful()){
                             ADMIN_PASSWORD = task.getResult().get("password").toString();
-                            signInAdmin(Constants.ADMIN_MAIL,ADMIN_PASSWORD);
+                            signInAdmin(Constants.ADMIN_MAIL,ADMIN_PASSWORD,context);
                         }
                         else{
+                            Toast.makeText(context, "Something went wrong...", Toast.LENGTH_SHORT).show();
                             onFirebaseRespond.onUserAdded(false);
                         }
                     }
                 });
     }
 
-    private void signInAdmin(String email, String admin_password) {
+    private void signInAdmin(String email, String admin_password,Context context) {
         firebaseAuth.signInWithEmailAndPassword(email,admin_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+                    Toast.makeText(context, "User account created", Toast.LENGTH_SHORT).show();
                     onFirebaseRespond.onUserAdded(true);
                 }else{
+                    Toast.makeText(context, "Something went wrong...", Toast.LENGTH_SHORT).show();
                     onFirebaseRespond.onUserAdded(false);
                 }
             }
@@ -107,11 +113,11 @@ public class AddUserFragmentRepository {
 
     }
 
-    public void addNewUser(User user,boolean newUser){
-
+    public void addNewUser(User user,boolean newUser,Context context){
+        Date today = Helper.getTodayDateObject();
         if(newUser){
             if(user.getUserType().equals(Constants.WORKER)){
-                Date today = Helper.getTodayDateObject();
+
                 Attendance attendance = new Attendance(user.getPlantName(), user.getUserName(),
                       today.getDay(), today.getMonth(), today.getYear(), Constants.NO_ATTENDANCE);
                 firebaseFirestore.collection(Constants.ATTENDANCE)
@@ -119,11 +125,16 @@ public class AddUserFragmentRepository {
                         .set(attendance).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
 
+                                }
                             }
                         });
             }
         }
+
+
+
 
 
         firebaseFirestore.collection(user.getUserType())
@@ -134,13 +145,15 @@ public class AddUserFragmentRepository {
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             if(newUser){
-
-                                signUpUser(user.getEmail(), user.getPassword());
+                                Toast.makeText(context, "Creating user account...", Toast.LENGTH_SHORT).show();
+                                signUpUser(user.getEmail(), user.getPassword(),context);
                             }else{
-                                onFirebaseRespond.onUserAdded(true);
+                                onFirebaseRespond.onUserAdded(false);
+                                Toast.makeText(context, "User account created", Toast.LENGTH_SHORT).show();
                             }
+
                         }else{
-                            onFirebaseRespond.onUserAdded(false);
+                           
                         }
                     }
                 });
@@ -170,13 +183,14 @@ public class AddUserFragmentRepository {
 
     }
 
-    public void signUpUser(String email, String password){
+    public void signUpUser(String email, String password,Context context){
         firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
               if(task.isSuccessful()){
-                  getAdminPassword();
+                  getAdminPassword(context);
               }else{
+                  Toast.makeText(context, "Something went wrong...", Toast.LENGTH_SHORT).show();
                   onFirebaseRespond.onUserAdded(false);
               }
             }

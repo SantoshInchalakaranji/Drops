@@ -2,6 +2,7 @@ package com.prplmnstr.drops.views.admin;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -29,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -51,12 +53,14 @@ import com.prplmnstr.drops.adapters.DashboardRecyclerAdapter;
 import com.prplmnstr.drops.databinding.AddPlantDialogBinding;
 import com.prplmnstr.drops.databinding.AddPlantReportDialogBinding;
 import com.prplmnstr.drops.databinding.AddUnitDialogBinding;
+import com.prplmnstr.drops.databinding.AttendanceItemBinding;
 import com.prplmnstr.drops.databinding.CalenderDialogBinding;
 import com.prplmnstr.drops.databinding.DashboardListViewItemBinding;
 import com.prplmnstr.drops.databinding.FragmentDashboardBinding;
 import com.prplmnstr.drops.databinding.FragmentSignInBinding;
 import com.prplmnstr.drops.models.Attendance;
 import com.prplmnstr.drops.models.Date;
+import com.prplmnstr.drops.models.Expense;
 import com.prplmnstr.drops.models.Plant;
 import com.prplmnstr.drops.models.PlantReport;
 import com.prplmnstr.drops.models.Record;
@@ -85,13 +89,25 @@ public class DashboardFragment extends Fragment implements NavController.OnDesti
     private ArrayAdapter spinnerAdapter;
     private Dialog loader;
     private Dialog addUnitDialog;
-    private Dialog calenderDialog;
+
     private Dialog addPlantReportDailog;
     private AddPlantReportDialogBinding addPlantReportDialogBinding;
+    private Dialog calenderDialog;
     private CalenderDialogBinding calenderDialogBinding;
     private AddUnitDialogBinding addUnitDialogBinding;
     private BottomNavigationView bottomNavigationView;
     private  PlantReport newPlantReport;
+
+
+
+    List<Expense> expenses = new ArrayList<>();
+    private RecyclerView expenseRV;
+    private List<RecyclerModel> expenseRecyclerItems = new ArrayList<>();
+    private DashboardRecyclerAdapter expenseAdapter;
+    private  int collection;
+    private int dayExpense = 0;
+    private  int monthlyExpense;
+
 
     // adding unit variables
     private String unitType, unitName;
@@ -201,9 +217,12 @@ public class DashboardFragment extends Fragment implements NavController.OnDesti
             binding.downloadButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Toast.makeText(getContext(), "Downloading...", Toast.LENGTH_SHORT).show();
                    CreatePdfReport createPdfReport = new CreatePdfReport(getContext(),getResources(),getActivity());
-                    createPdfReport.downloadableData(PLANT_NAME);
-                    //Toast.makeText(getContext(), "Downloaded", Toast.LENGTH_SHORT).show();
+                    createPdfReport.downloadableData(PLANT_NAME,Helper.getTodayDateObject());
+
+
+
                 }
             });
 
@@ -241,39 +260,44 @@ public class DashboardFragment extends Fragment implements NavController.OnDesti
 
 
 
-        addPlantReportDialogBinding.dialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-             String flow =    addPlantReportDialogBinding.flow.getText().toString();
-             String tds =    addPlantReportDialogBinding.tds.getText().toString();
-             String pressure =    addPlantReportDialogBinding.pressure.getText().toString();
-             String meterOpen =    addPlantReportDialogBinding.meterOpen.getText().toString();
-             String meterClose =    addPlantReportDialogBinding.meterClose.getText().toString();
-
-             if(flow.isEmpty() || tds.isEmpty() || pressure.isEmpty() || meterOpen.isEmpty() || meterClose.isEmpty()){
-                 Toast.makeText(getActivity(), "Fields cant be empty", Toast.LENGTH_SHORT).show();
-                 return;
-             }else{
-                Date today =  Helper.getTodayDateObject();
-                int  usage = Math.abs(Integer.parseInt(meterClose)-Integer.parseInt(meterOpen));
-                 PlantReport plantReport = new PlantReport(PLANT_NAME,pressure,Integer.parseInt(flow),
-                         Integer.parseInt(tds)
-                         ,Integer.parseInt(meterOpen),
-                         Integer.parseInt(meterClose),usage,
-
-
-                         today.getDay(),today.getMonth(),today.getYear());
-
-                 binding.flowNumber.setText(String.valueOf(plantReport.getFlow()));
-                 binding.tdsNumber.setText(String.valueOf(plantReport.getTds()));
-                 binding.pressureNumber.setText(plantReport.getPressure());
-                 binding.plantReportDate.setText(today.getDateInStringFormat());
-                 viewModel.savePlantReport(plantReport);
-                 Toast.makeText(getActivity(), "Plant Repord Added", Toast.LENGTH_SHORT).show();
-                 addPlantReportDailog.dismiss();
-             }
-            }
-        });
+//        addPlantReportDialogBinding.dialogButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//             String flow =    addPlantReportDialogBinding.flow.getText().toString();
+//             String tds =    addPlantReportDialogBinding.tds.getText().toString();
+//             String pressure =    addPlantReportDialogBinding.pressure.getText().toString();
+//             String meterOpen =    addPlantReportDialogBinding.meterOpen.getText().toString();
+//             String meterClose =    addPlantReportDialogBinding.meterClose.getText().toString();
+//          //   String expense =    addPlantReportDialogBinding.expense.getText().toString();
+//
+//
+//             if(flow.isEmpty() || tds.isEmpty() || pressure.isEmpty() ||
+//                     meterOpen.isEmpty() || meterClose.isEmpty() ){
+//                 Toast.makeText(getActivity(), "Fields cant be empty", Toast.LENGTH_SHORT).show();
+//                 return;
+//             }else{
+//                Date today =  Helper.getTodayDateObject();
+//                int  usage = Math.abs(Integer.parseInt(meterClose)-Integer.parseInt(meterOpen));
+//                 PlantReport plantReport = new PlantReport(PLANT_NAME,pressure,Integer.parseInt(flow),
+//                         Integer.parseInt(tds)
+//                         ,Integer.parseInt(meterOpen),
+//                         Integer.parseInt(meterClose),
+//                         usage,
+//                         Integer.parseInt(expense),
+//
+//                         today.getDay(),today.getMonth(),today.getYear());
+//
+//                 binding.flowNumber.setText(String.valueOf(plantReport.getFlow()));
+//                 binding.tdsNumber.setText(String.valueOf(plantReport.getTds()));
+//                 binding.pressureNumber.setText(plantReport.getPressure());
+//                 binding.plantReportDate.setText(today.getDateInStringFormat());
+//                 binding.expenseNumber.setText(expense);
+//                 viewModel.savePlantReport(plantReport,getContext());
+//                 Toast.makeText(getActivity(), "Adding report...", Toast.LENGTH_SHORT).show();
+//                 addPlantReportDailog.dismiss();
+//             }
+//            }
+//        });
     }
 
     private void checkUnitSize(String plantName) {
@@ -286,6 +310,7 @@ public class DashboardFragment extends Fragment implements NavController.OnDesti
                     loadAttendance(PLANT_NAME);
                     loadPlantReport(PLANT_NAME);
                     loadMonthlyReport(PLANT_NAME);
+                    loadExpenses(PLANT_NAME);
                     binding.mainLayout.setVisibility(View.VISIBLE);
                     binding.noPlantsLayout.setVisibility(View.INVISIBLE);
 
@@ -307,9 +332,80 @@ public class DashboardFragment extends Fragment implements NavController.OnDesti
                 if(records!= null){
                     Map<String, String> map = new HashMap<>();
                    map =  viewModel.getMonthlySum(records);
-                   binding.monthAmountNumber.setText("₹"+map.get("sum"));
+                   float textSize = viewModel.calculateTextSize(map.get("waterSupply"));
+                   binding.monthWaterNumber.setTextSize(textSize);
+                   binding.monthAmountNumber.setTextSize(textSize);
+                 //  binding.monthAmountNumber.setText("₹"+map.get("sum"));
                    binding.monthWaterNumber.setText(map.get("waterSupply"));
+
+                   int monthSum = Integer.parseInt(map.get("sum"));
+
+                    viewModel.getMonthlyExpense(PLANT_NAME).observe(getViewLifecycleOwner(), new Observer<Integer>() {
+                        @Override
+                        public void onChanged(Integer expenses) {
+                            monthlyExpense = expenses;
+                            binding.monthAmountNumber.setText("₹ "+(monthSum-expenses));
+                        }
+                    });
                 }
+            }
+        });
+    }
+
+
+
+    private void loadExpenses(String plantName) {
+        // expense recycler
+        expenseRV = binding.expenseRV;
+        expenseRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+        expenseRV.setHasFixedSize(true);
+        expenseAdapter = new DashboardRecyclerAdapter();
+        expenseRV.setAdapter(expenseAdapter);
+
+
+
+        viewModel.getExpenses(plantName).observe(getViewLifecycleOwner(), new Observer<List<Expense>>() {
+            @Override
+            public void onChanged(List<Expense> expenseList) {
+                if (expenseList != null) {
+                    if (!expenseList.isEmpty()) {
+                        expenses = expenseList;
+                        String drawableName = "expense"; // Replace with the name of your drawable
+                        int expenseResourceId = getResources().getIdentifier(drawableName, "drawable", getContext().getPackageName());
+                        expenseRecyclerItems = viewModel.getRecycleItemsOfExpense(expenses, getResources(), expenseResourceId);
+
+                        expenseAdapter.setRecyclerItems(expenseRecyclerItems);
+                        viewModel.getSumOfExpenses().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+                            @Override
+                            public void onChanged(Integer sum) {
+                                binding.expenseNumber.setText(String.valueOf(sum));
+                                binding.totalExpenseNumber.setText(String.valueOf(sum));
+                                 dayExpense = sum;
+                                binding.inHandNumber.setText("₹" + String.valueOf(collection - sum));
+
+                            }
+                        });
+
+
+
+
+                    } else {
+                        expenseRecyclerItems.clear();
+                        expenseAdapter.setRecyclerItems(expenseRecyclerItems);
+                        binding.expenseNumber.setText("0");
+                        binding.totalExpenseNumber.setText("0");
+                        binding.inHandNumber.setText("₹"+String.valueOf(collection));
+
+                    }
+                }else{
+                    expenseRecyclerItems.clear();
+                    expenseAdapter.setRecyclerItems(expenseRecyclerItems);
+                    binding.expenseNumber.setText("0");
+                    binding.totalExpenseNumber.setText("0");
+                    binding.inHandNumber.setText("₹"+String.valueOf(collection));
+                }
+
+                loader.dismiss();
             }
         });
     }
@@ -326,6 +422,9 @@ public class DashboardFragment extends Fragment implements NavController.OnDesti
                     binding.plantReportDate.setText(Helper.getDateInStringFormat(
                             plantReport.getDay(), plantReport.getMonth(), plantReport.getYear()
                     ));
+                  //  binding.expenseNumber.setText(String.valueOf(plantReport.getExpense()));
+                    binding.meterCloseNumber.setText(String.valueOf(plantReport.getMeterClose()));
+                    binding.usageNumber.setText(String.valueOf(plantReport.getUsage()));
                 }
             }
         });
@@ -349,22 +448,28 @@ public class DashboardFragment extends Fragment implements NavController.OnDesti
             }
 
             @Override
-            public void onPresentClick(Attendance attendance,int position) {
-
-                attendance.setAttendance(Constants.PRESENT);
-                attendanceList.get(position).setAttendance(Constants.PRESENT);
-                displayTotalAttendance(attendanceList);
-
-                viewModel.addAttendance(attendance,getContext());
+            public void onPresentClick(Attendance attendance, int position, AttendanceItemBinding attendanceItemBinding) {
+//                Toast.makeText(getContext(), "Registering attendance please wait...", Toast.LENGTH_LONG).show();
+//                adapter.presentClick(attendanceItemBinding);
+//                attendance.setAttendance(Constants.PRESENT);
+//                attendanceList.get(position).setAttendance(Constants.PRESENT);
+//                displayTotalAttendance(attendanceList);
+//
+//                viewModel.addAttendance(attendance,getContext());
             }
 
             @Override
-            public void onAbsentClick(Attendance attendance,int postition) {
-                attendanceList.get(postition).setAttendance(Constants.ABSENT);
-                displayTotalAttendance(attendanceList);
+            public void onAbsentClick(Attendance attendance,int postition,AttendanceItemBinding attendanceItemBinding) {
 
-            attendance.setAttendance(Constants.ABSENT);
-                viewModel.addAttendance(attendance,getContext());
+//                adapter.absentClick(attendanceItemBinding);
+//                attendance.setAttendance(Constants.ABSENT);
+//                attendanceList.get(postition).setAttendance(Constants.ABSENT);
+//
+//
+//                displayTotalAttendance(attendanceList);
+//
+//                Toast.makeText(getContext(), "Registering attendance please wait...", Toast.LENGTH_LONG).show();
+//                viewModel.addAttendance(attendance,getContext());
         }
 
             @Override
@@ -377,12 +482,16 @@ public class DashboardFragment extends Fragment implements NavController.OnDesti
         viewModel.getAttendances(PLANT_NAME).observe(getViewLifecycleOwner(), new Observer<List<Attendance>>() {
             @Override
             public void onChanged(List<Attendance> attendances) {
-                attendanceList = attendances;
+                if(attendances!= null){
+                    attendanceList = attendances;
+                    displayTotalAttendance(attendances);
+                }
+
 
                 adapter.setResources(getResources());
 
                 adapter.setAttendanceList(attendanceList);
-               displayTotalAttendance(attendances);
+
             }
         });
     }
@@ -442,11 +551,17 @@ public class DashboardFragment extends Fragment implements NavController.OnDesti
                     @Override
                     public void onChanged(Integer integer) {
                         noOfUits = integer;
-
+                       int  taskCount = todayRecords.size();
+                        binding.percentageTV.setText(taskCount+"/"+noOfUits);
+                        binding.linearProgressBar.setProgress(taskCount);
+                        binding.linearProgressBar.setMax(noOfUits);
 
                         binding.percentageTV.setText(todayRecords.size()+"/"+ noOfUits);
                         Map<String ,Integer> map = viewModel.getBlueBoxDetails(recordList);
                         binding.totalAmountTV.setText("₹ "+map.get("sum"));
+                        binding.totalCashNumber.setText("₹"+map.get("sum"));
+                        collection = map.get("sum");
+                        binding.inHandNumber.setText("₹" + String.valueOf(collection - dayExpense));
                         binding.waterDispenseTV.setText("Water dispense(L) : "+map.get("waterSupply"));
                         loader.dismiss();
                     }

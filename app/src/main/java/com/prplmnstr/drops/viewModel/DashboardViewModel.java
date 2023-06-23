@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel;
 import com.prplmnstr.drops.R;
 import com.prplmnstr.drops.models.Attendance;
 import com.prplmnstr.drops.models.Date;
+import com.prplmnstr.drops.models.Expense;
 import com.prplmnstr.drops.models.Plant;
 import com.prplmnstr.drops.models.PlantReport;
 import com.prplmnstr.drops.models.Record;
@@ -30,7 +31,9 @@ public class DashboardViewModel extends ViewModel implements DashboardFBReposito
 
 
 
+
     private DashboardFBRepository repository;
+
 
 
     private MutableLiveData<Boolean> result;
@@ -43,6 +46,9 @@ public class DashboardViewModel extends ViewModel implements DashboardFBReposito
     private MutableLiveData<List<Attendance>> attendanceOfUser;
     private MutableLiveData<List<Record>> monthlyData;
     private MutableLiveData<PlantReport> plantReport;
+    private MutableLiveData<List<Expense>> expenses;
+    private MutableLiveData<Integer> sumOfExpenses;
+    private MutableLiveData<Integer> monthlyExpense;
     public DashboardViewModel(){
         repository = new DashboardFBRepository(this);
         result = new MutableLiveData<>();
@@ -55,6 +61,9 @@ public class DashboardViewModel extends ViewModel implements DashboardFBReposito
         attendanceOfUser = new MutableLiveData<>();
         monthlyData = new MutableLiveData<>();
         plantReport = new MutableLiveData<>();
+        expenses = new MutableLiveData<>();
+        sumOfExpenses = new MutableLiveData<>();
+        monthlyExpense = new MutableLiveData<>();
 
 
     }
@@ -93,6 +102,11 @@ public class DashboardViewModel extends ViewModel implements DashboardFBReposito
         return noOfUnits;
     }
 
+    public MutableLiveData<Integer> getMonthlyExpense(String plantName){
+        repository.getMonthlyExpense(plantName);
+        return monthlyExpense;
+    }
+
     public MutableLiveData<Boolean> addAttendance(Attendance attendance, Context context){
 
         repository.saveAttendance(attendance,context);
@@ -124,8 +138,8 @@ public class DashboardViewModel extends ViewModel implements DashboardFBReposito
         map.put("absent", String.valueOf(absent));
         return map;
     }
-    public void savePlantReport(PlantReport plantReport){
-            repository.savePlantReport(plantReport);
+    public void savePlantReport(PlantReport plantReport,Context context){
+            repository.savePlantReport(plantReport,context);
     }
 
     public Map<String,String> getMonthlySum(List<Record> records){
@@ -141,7 +155,33 @@ public class DashboardViewModel extends ViewModel implements DashboardFBReposito
         return map;
     }
 
-    private float calculateTextSize(String text) {
+    public MutableLiveData<List<Expense>> getExpenses(String plantName){
+        repository.getExpenses(plantName);
+        return expenses;
+    }
+
+    public List<RecyclerModel> getRecycleItemsOfExpense(List<Expense> expenses, Resources resources, int expenseResourceId) {
+        List<RecyclerModel> resultList = new ArrayList<>();
+        int sum =0;
+        for(Expense expense : expenses){
+            RecyclerModel item = new RecyclerModel();
+            item.setImageIndex(expenseResourceId);
+            item.setHeaderName(expense.getTitle());
+            item.setSubTitleName("₹ "+expense.getAmount());
+            item.setDate("");
+            sum += expense.getAmount();
+
+            resultList.add(item);
+
+        }
+        sumOfExpenses.setValue(sum);
+        return resultList;
+    }
+
+    public MutableLiveData<Integer> getSumOfExpenses(){
+        return sumOfExpenses;
+    }
+    public float calculateTextSize(String text) {
         int textLength = text.length();
         if(textLength<7 ){
             return 24;
@@ -221,5 +261,15 @@ public class DashboardViewModel extends ViewModel implements DashboardFBReposito
     @Override
     public void onPlantReportLoaded(PlantReport plantReport) {
         this.plantReport.setValue(plantReport);
+    }
+
+    @Override
+    public void onExpenseLoaded(List<Expense> expenses) {
+        this.expenses.setValue(expenses);
+    }
+
+    @Override
+    public void onGettingMontlyExpense(Integer totalExpense) {
+        this.monthlyExpense.setValue(totalExpense);
     }
 }

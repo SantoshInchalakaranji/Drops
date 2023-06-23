@@ -99,13 +99,8 @@ public class AttendanceRvAdapter extends RecyclerView.Adapter<AttendanceRvAdapte
                 @Override
                 public void onClick(View view) {
                     int clickedPosition = getAdapterPosition();
-                    Drawable background = resources.getDrawable(R.drawable.attendace_gray_box);
-                    Drawable present = resources.getDrawable(R.drawable.present_bg);
-                    attendanceItemBinding.absentLayout.setBackground(background);
-                   attendanceItemBinding.presentLayout.setBackground(present);
-                    attendanceItemBinding.P.setTextColor((resources.getColor(R.color.white)));
-                    attendanceItemBinding.A.setTextColor((resources.getColor(R.color.black)));
-                    listener.onPresentClick(attendanceList.get(clickedPosition),clickedPosition);
+
+                    listener.onPresentClick(attendanceList.get(clickedPosition),clickedPosition,attendanceItemBinding);
                 }
             });
 
@@ -137,16 +132,29 @@ public class AttendanceRvAdapter extends RecyclerView.Adapter<AttendanceRvAdapte
                 @Override
                 public void onClick(View view) {
                     int clickedPosition = getAdapterPosition();
-                    Drawable background = resources.getDrawable(R.drawable.attendace_gray_box);
-                    Drawable absent = resources.getDrawable(R.drawable.absent_bg);
-                    attendanceItemBinding.absentLayout.setBackground(absent);
-                    attendanceItemBinding.presentLayout.setBackground(background);
-                    attendanceItemBinding.P.setTextColor((resources.getColor(R.color.black)));
-                    attendanceItemBinding.A.setTextColor((resources.getColor(R.color.white)));
-                    listener.onAbsentClick(attendanceList.get(clickedPosition),clickedPosition);
+
+                    listener.onAbsentClick(attendanceList.get(clickedPosition),clickedPosition,attendanceItemBinding);
                 }
             });
         }
+    }
+
+    public void presentClick(AttendanceItemBinding attendanceItemBinding) {
+        Drawable background = resources.getDrawable(R.drawable.attendace_gray_box);
+        Drawable present = resources.getDrawable(R.drawable.present_bg);
+        attendanceItemBinding.absentLayout.setBackground(background);
+        attendanceItemBinding.presentLayout.setBackground(present);
+        attendanceItemBinding.P.setTextColor((resources.getColor(R.color.white)));
+        attendanceItemBinding.A.setTextColor((resources.getColor(R.color.black)));
+    }
+
+    public void absentClick(AttendanceItemBinding attendanceItemBinding) {
+        Drawable background = resources.getDrawable(R.drawable.attendace_gray_box);
+        Drawable absent = resources.getDrawable(R.drawable.absent_bg);
+        attendanceItemBinding.absentLayout.setBackground(absent);
+        attendanceItemBinding.presentLayout.setBackground(background);
+        attendanceItemBinding.P.setTextColor((resources.getColor(R.color.black)));
+        attendanceItemBinding.A.setTextColor((resources.getColor(R.color.white)));
     }
 
     public void setAttendanceList(List<Attendance> list) {
@@ -163,8 +171,8 @@ public class AttendanceRvAdapter extends RecyclerView.Adapter<AttendanceRvAdapte
 
     public interface OnItemClickListener{
         void onItemClick(Attendance attendance,int clickPosition);
-        void onPresentClick(Attendance attendance, int position);
-        void onAbsentClick(Attendance attendance,int position);
+        void onPresentClick(Attendance attendance, int position,AttendanceItemBinding attendanceItemBinding);
+        void onAbsentClick(Attendance attendance,int position,AttendanceItemBinding attendanceItemBinding);
 
         void onDeleteRequest(Attendance attendance);
     }

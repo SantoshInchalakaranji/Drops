@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.prplmnstr.drops.models.RecyclerModel;
 import com.prplmnstr.drops.models.User;
-import com.prplmnstr.drops.repository.UserDetailsRepository;
+
 import com.prplmnstr.drops.repository.admin.AddUserFragmentRepository;
 import com.prplmnstr.drops.utils.Constants;
 
@@ -36,8 +36,8 @@ public class AddUserViewModel extends ViewModel implements AddUserFragmentReposi
 
     }
 
-    public MutableLiveData<Boolean> addUser(User user,boolean newUser){
-        repository.addNewUser(user,newUser);
+    public MutableLiveData<Boolean> addUser(User user,boolean newUser,Context context){
+        repository.addNewUser(user,newUser,context);
         return result;
     }
 
@@ -45,13 +45,13 @@ public class AddUserViewModel extends ViewModel implements AddUserFragmentReposi
         repository.deleteUser(user,context);
         return deleteResult;
     }
-    public MutableLiveData<List<User>> getWorkers(){
-        repository.getWorkers();
+    public MutableLiveData<List<User>> getWorkers(String plantName){
+        repository.getWorkers(plantName);
         return workers;
     }
 
-    public MutableLiveData<List<User>> getInvestors(){
-        repository.getInvestors();
+    public MutableLiveData<List<User>> getInvestors(String plantName){
+        repository.getInvestors(plantName);
         return investors;
     }
     public List<RecyclerModel> mapUsersToRecyclerItem(List<User> users,String plantName){

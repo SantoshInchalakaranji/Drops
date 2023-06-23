@@ -11,7 +11,7 @@ public class PlantReport extends BaseObservable {
     public PlantReport() {
     }
 
-    public PlantReport(String plantName, String pressure, int flow, int tds, int meterOpen, int meterClose, int usage, int day, int month, int year) {
+    public PlantReport(String plantName, String pressure, int flow, int tds, int meterOpen, int meterClose, int usage,  int day, int month, int year) {
         this.plantName = plantName;
         this.pressure = pressure;
         this.flow = flow;
@@ -19,10 +19,12 @@ public class PlantReport extends BaseObservable {
         this.meterOpen = meterOpen;
         this.meterClose = meterClose;
         this.usage = usage;
+
         this.day = day;
         this.month = month;
         this.year = year;
     }
+
     @Bindable
     public int getMeterOpen() {
         return meterOpen;
@@ -64,6 +66,8 @@ public class PlantReport extends BaseObservable {
     public int getYear() {
         return year;
     }
+
+
 
 
     public void setPlantName(String plantName) {

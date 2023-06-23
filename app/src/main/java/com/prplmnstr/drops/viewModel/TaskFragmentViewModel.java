@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.prplmnstr.drops.R;
 import com.prplmnstr.drops.models.Date;
+import com.prplmnstr.drops.models.Expense;
 import com.prplmnstr.drops.models.Record;
 import com.prplmnstr.drops.models.RecyclerModel;
 import com.prplmnstr.drops.repository.worker.TaskFragmentRepository;
@@ -31,7 +32,9 @@ public class TaskFragmentViewModel extends ViewModel implements TaskFragmentRepo
     private MutableLiveData<Integer> collection;
     private MutableLiveData<Integer> waterSupply;
     private MutableLiveData<Integer> taskCount;
+    private MutableLiveData<Integer> sumOfExpenses;
     private MutableLiveData<Boolean> result;
+    private MutableLiveData<List<Expense>> expenses;
 
     public TaskFragmentViewModel() {
         this.repository = new TaskFragmentRepository(this);
@@ -41,6 +44,8 @@ public class TaskFragmentViewModel extends ViewModel implements TaskFragmentRepo
         waterSupply = new MutableLiveData<>();
         taskCount = new MutableLiveData<>();
         result = new MutableLiveData<>();
+        expenses = new MutableLiveData<>();
+        sumOfExpenses = new MutableLiveData<>();
 
 
     }
@@ -58,10 +63,22 @@ public class TaskFragmentViewModel extends ViewModel implements TaskFragmentRepo
     }
 
 
-    public MutableLiveData<List<String>> getPlants(){
-        repository.getPlants();
+    public MutableLiveData<List<String>> getPlants(String userType){
+        repository.getPlants(userType);
         return plants;
     }
+
+    public MutableLiveData<List<Expense>> getExpenses(String plantName){
+        repository.getExpenses(plantName);
+        return expenses;
+    }
+    public void saveExpense(Expense expense, Context context ){
+        repository.addExpese(expense,context);
+
+    }
+
+
+
     public MutableLiveData<List<Record>> getRecords(String plantName){
 
         repository.getRecords(plantName);
@@ -69,7 +86,27 @@ public class TaskFragmentViewModel extends ViewModel implements TaskFragmentRepo
         return records;
     }
 
+    public List<RecyclerModel> getRecycleItemsOfExpense(List<Expense> expenses, Resources resources, int expenseResourceId) {
+        List<RecyclerModel> resultList = new ArrayList<>();
+        int sum =0;
+        for(Expense expense : expenses){
+            RecyclerModel item = new RecyclerModel();
+            item.setImageIndex(expenseResourceId);
+            item.setHeaderName(expense.getTitle());
+            item.setSubTitleName("₹ "+expense.getAmount());
+            item.setDate("");
+            sum += expense.getAmount();
 
+            resultList.add(item);
+
+        }
+        sumOfExpenses.setValue(sum);
+        return resultList;
+    }
+
+    public MutableLiveData<Integer> getSumOfExpenses(){
+        return sumOfExpenses;
+    }
     public List<RecyclerModel> getRecycleItems(List<Record> records,Resources resources, int checkmarkId) {
        int sum = 0;
        int waterSupply =0;
@@ -156,6 +193,13 @@ public class TaskFragmentViewModel extends ViewModel implements TaskFragmentRepo
     public void onRecordAdded(Boolean result) {
         this.result.setValue(result);
     }
+
+    @Override
+    public void onExpenseLoaded(List<Expense> expenses) {
+            this.expenses.setValue(expenses);
+    }
+
+
 }
 
 

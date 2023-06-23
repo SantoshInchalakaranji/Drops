@@ -1,16 +1,21 @@
 package com.prplmnstr.drops.viewModel.investor;
 
+import android.content.res.Resources;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.prplmnstr.drops.models.Attendance;
+import com.prplmnstr.drops.models.Expense;
 import com.prplmnstr.drops.models.PlantReport;
 import com.prplmnstr.drops.models.Record;
+import com.prplmnstr.drops.models.RecyclerModel;
 import com.prplmnstr.drops.repository.admin.DashboardFBRepository;
 import com.prplmnstr.drops.repository.worker.TaskFragmentRepository;
 import com.prplmnstr.drops.utils.Constants;
 import com.prplmnstr.drops.views.worker.WorkerTaskFragment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +36,10 @@ public class InvestorDashboardViewModel extends ViewModel implements DashboardFB
     private MutableLiveData<List<Record>> monthlyData;
     private MutableLiveData<PlantReport> plantReport;
     private MutableLiveData<List<String>> plants;
+    private MutableLiveData<List<Expense>> expenses;
+    private MutableLiveData<Integer> sumOfExpenses;
+    private MutableLiveData<Integer> monthlyExpense;
+
 
 
     public InvestorDashboardViewModel(){
@@ -45,13 +54,48 @@ public class InvestorDashboardViewModel extends ViewModel implements DashboardFB
         monthlyData = new MutableLiveData<>();
         plantReport = new MutableLiveData<>();
         plants = new MutableLiveData<>();
-
+        expenses = new MutableLiveData<>();
+        sumOfExpenses = new MutableLiveData<>();
+        monthlyExpense = new MutableLiveData<>();
 
     }
 
 
-    public MutableLiveData<List<String>> getPlants(){
-        taskRepo.getPlants();
+    public MutableLiveData<List<Expense>> getExpenses(String plantName){
+        repository.getExpenses(plantName);
+        return expenses;
+    }
+
+
+    public MutableLiveData<Integer> getMonthlyExpense(String plantName){
+        repository.getMonthlyExpense(plantName);
+        return monthlyExpense;
+    }
+
+    public List<RecyclerModel> getRecycleItemsOfExpense(List<Expense> expenses, Resources resources, int expenseResourceId) {
+        List<RecyclerModel> resultList = new ArrayList<>();
+        int sum =0;
+        for(Expense expense : expenses){
+            RecyclerModel item = new RecyclerModel();
+            item.setImageIndex(expenseResourceId);
+            item.setHeaderName(expense.getTitle());
+            item.setSubTitleName("₹ "+expense.getAmount());
+            item.setDate("");
+            sum += expense.getAmount();
+
+            resultList.add(item);
+
+        }
+        sumOfExpenses.setValue(sum);
+        return resultList;
+    }
+
+    public MutableLiveData<Integer> getSumOfExpenses(){
+        return sumOfExpenses;
+    }
+
+    public MutableLiveData<List<String>> getPlants(String userType){
+        taskRepo.getPlants(userType);
         return plants;
     }
 
@@ -191,5 +235,15 @@ public class InvestorDashboardViewModel extends ViewModel implements DashboardFB
     @Override
     public void onRecordAdded(Boolean result) {
 
+    }
+
+    @Override
+    public void onExpenseLoaded(List<Expense> expenses) {
+        this.expenses.setValue(expenses);
+    }
+
+    @Override
+    public void onGettingMontlyExpense(Integer totalExpense) {
+        this.monthlyExpense.setValue(totalExpense);
     }
 }

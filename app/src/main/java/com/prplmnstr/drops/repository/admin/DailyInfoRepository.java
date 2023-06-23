@@ -65,11 +65,11 @@ public class DailyInfoRepository {
         Date today = Helper.getTodayDateObject();
         Query query;
 
-        Log.i("TAG", "onComplete: "+String.valueOf(units.size()));
+     //   Log.i("TAG", "onComplete: "+String.valueOf(units.size()));
         for(Unit unit : units){
 
             if(today.getDateInStringFormat().equals(date.getDateInStringFormat())){
-                Log.i("TAG", "today----------------: "+units.get(0).getUnitName());
+              //  Log.i("TAG", "today----------------: "+units.get(0).getUnitName());
 
                 query =  firebaseFirestore.collection(Constants.RECORDS)
                         .whereEqualTo(Constants.PLANT_NAME,plantName)
@@ -80,7 +80,7 @@ public class DailyInfoRepository {
 
                         .limit(1);
             }else{
-                Log.i("TAG", "yesterday----------------: "+unit.getUnitName());
+              //  Log.i("TAG", "yesterday----------------: "+unit.getUnitName());
                 query = firebaseFirestore.collection(Constants.RECORDS)
 
                         .whereEqualTo(Constants.PLANT_NAME,plantName)

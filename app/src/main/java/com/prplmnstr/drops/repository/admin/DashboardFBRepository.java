@@ -28,6 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.prplmnstr.drops.R;
 import com.prplmnstr.drops.models.Attendance;
 import com.prplmnstr.drops.models.Date;
+import com.prplmnstr.drops.models.Expense;
 import com.prplmnstr.drops.models.Plant;
 import com.prplmnstr.drops.models.PlantReport;
 import com.prplmnstr.drops.models.Record;
@@ -55,6 +56,7 @@ public class DashboardFBRepository {
     List<Attendance> attendances = new ArrayList<>();
     List<Unit> units  = new ArrayList<>();
     List<Record> montlyRecords  = new ArrayList<>();
+    List<Expense> monthlyExpense  = new ArrayList<>();
     PlantReport plantReport = new PlantReport();
 
 
@@ -153,11 +155,21 @@ public class DashboardFBRepository {
 
 
 
-    public  void savePlantReport(PlantReport plantReport){
+    public  void savePlantReport(PlantReport plantReport,Context context){
         Date today = Helper.getTodayDateObject();
         firebaseFirestore.collection(Constants.PLANT_REPORTS)
                 .document(plantReport.getPlantName()+"_"+today.getDateInStringFormat())
-                .set(plantReport);
+                .set(plantReport).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(context, "Plant report Added", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(context, "Adding failed please try again", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     public void getPlantReport(String plantName){
@@ -237,6 +249,44 @@ public class DashboardFBRepository {
         }
 
 
+    public void getMonthlyExpense( String plantName) {
+
+
+        Date today = Helper.getTodayDateObject();
+
+
+
+
+        firebaseFirestore.collection(Constants.EXPENSES)
+                .whereEqualTo(Constants.PLANT_NAME,plantName)
+                .whereEqualTo("year",today.getYear())
+                .whereEqualTo("month",today.getMonth())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            int totalExpense=0;
+                            QuerySnapshot snapshot = task.getResult();
+                            if(snapshot.isEmpty()){
+                               onFirebaseRespond.onGettingMontlyExpense(0);
+                            }else{
+                                monthlyExpense = task.getResult().toObjects(Expense.class);
+                                for(Expense expense: monthlyExpense){
+                                    totalExpense += expense.getAmount();
+                                }
+                                onFirebaseRespond.onGettingMontlyExpense(totalExpense);
+                            }
+
+
+                        }else{
+
+                            onFirebaseRespond.onGettingMontlyExpense(0);
+                        }
+                    }
+                });
+    }
+
+
     public void getAllAttendanceOfUser(Attendance attendance){
 
         firebaseFirestore.collection(Constants.ATTENDANCE)
@@ -259,6 +309,35 @@ public class DashboardFBRepository {
 
     }
 
+    public void getExpenses(String plantName){
+        Date today = Helper.getTodayDateObject();
+        firebaseFirestore.collection(Constants.EXPENSES)
+                .whereEqualTo(Constants.PLANT_NAME,plantName )
+                .whereEqualTo("year", today.getYear())
+                .whereEqualTo("month", today.getMonth())
+                .whereEqualTo("day",today.getDay())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            QuerySnapshot document = task.getResult();
+                            if (!document.isEmpty()) {
+                                onFirebaseRespond.onExpenseLoaded(
+                                        task.getResult().toObjects(Expense.class)
+                                );
+                            }else{
+                                onFirebaseRespond.onExpenseLoaded(
+                                        null
+                                );
+                            }
+
+                        }
+
+                    }
+                });
+    }
+
+
 
     private void getAttendance(List<User> workers,String plantName) {
         Date today = Helper.getTodayDateObject();
@@ -275,7 +354,20 @@ public class DashboardFBRepository {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if(task.isSuccessful()){
-                               Attendance attendance  = task.getResult().toObjects(Attendance.class).get(0);
+                                QuerySnapshot snapshot = task.getResult();
+                                Attendance attendance= new Attendance();
+                                if(snapshot.isEmpty()){
+                                    attendance.setUserName(worker.getUserName());
+                                    attendance.setPlantName(plantName);
+                                    attendance.setDay(today.getDay());
+                                    attendance.setMonth(today.getMonth());
+                                    attendance.setAttendance(Constants.NO_ATTENDANCE);
+                                    attendance.setYear(today.getYear());
+
+                                }else{
+                                    attendance  = task.getResult().toObjects(Attendance.class).get(0);
+                                }
+
                                 String lastAtteded = Helper.getDateInStringFormat(attendance.getDay(),attendance.getMonth(), attendance.getYear());
                                 if(!lastAtteded.equals(today.getDateInStringFormat())){
                                     attendance.setDay(today.getDay());
@@ -422,5 +514,8 @@ public class DashboardFBRepository {
         void onGettingMontlyData(List<Record> monthlyRecords);
         void onPlantReportLoaded(PlantReport plantReport);
 
+        void onExpenseLoaded(List<Expense> expenses);
+
+        void onGettingMontlyExpense(Integer totalExpense);
     }
 }

@@ -23,9 +23,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.prplmnstr.drops.MainActivity;
 import com.prplmnstr.drops.R;
 import com.prplmnstr.drops.models.Date;
+import com.prplmnstr.drops.models.Expense;
 import com.prplmnstr.drops.models.Plant;
 import com.prplmnstr.drops.models.Record;
 import com.prplmnstr.drops.models.Unit;
+import com.prplmnstr.drops.models.User;
 import com.prplmnstr.drops.repository.admin.AddUserFragmentRepository;
 import com.prplmnstr.drops.utils.Constants;
 import com.prplmnstr.drops.utils.Helper;
@@ -38,7 +40,8 @@ public class TaskFragmentRepository {
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     List<Unit> units = new ArrayList<>();
-    private static final int PERMISSION_REQUEST_CODE = 123;
+
+
 
 
     public TaskFragmentRepository(OnFirebaseRespond onFirebaseRespond) {
@@ -50,10 +53,10 @@ public class TaskFragmentRepository {
     }
 
 
-    public void getPlants() {
+    public void getPlants(String userType) {
         String user = firebaseAuth.getCurrentUser().getEmail().toString();
         List<String> plants = new ArrayList<>();
-        firebaseFirestore.collection(Constants.WORKER)
+        firebaseFirestore.collection(userType)
                 .whereEqualTo("email", user)
                 .get()
 
@@ -95,7 +98,7 @@ public class TaskFragmentRepository {
                             QuerySnapshot snapshot = task.getResult();
                             if (!snapshot.isEmpty()) {
                                 units = snapshot.toObjects(Unit.class);
-                                getTasks(units);
+                                getTasks(units,plantName);
                                 Log.i("TAG", "onComplete: " + units.get(0).getUnitName());
                             } else {
                                 onFirebaseRespond.onTasksLoaded(null);
@@ -106,12 +109,13 @@ public class TaskFragmentRepository {
 
     }
 
-    private void getTasks(List<Unit> units) {
+    private void getTasks(List<Unit> units,String plantName) {
         List<Record> records = new ArrayList<>();
         Date today = Helper.getTodayDateObject();
         Log.i("TAG", "onComplete: " + String.valueOf(units.size()));
         for (Unit unit : units) {
             firebaseFirestore.collection(Constants.RECORDS)
+                    .whereEqualTo(Constants.PLANT_NAME,plantName)
                     .whereEqualTo(Constants.UNIT_NAME, unit.getUnitName())
                     .orderBy("year", Query.Direction.DESCENDING)
                     .orderBy("month", Query.Direction.DESCENDING)
@@ -163,6 +167,53 @@ public class TaskFragmentRepository {
                             Toast.makeText(context, "Record submit failed", Toast.LENGTH_SHORT).show();
                             onFirebaseRespond.onRecordAdded(false);
                         }
+                    }
+                });
+    }
+
+
+    public void addExpese(Expense expense,Context context){
+
+        firebaseFirestore.collection(Constants.EXPENSES)
+                .document()
+                .set(expense)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(context, "Expense Added", Toast.LENGTH_SHORT).show();
+
+                        }else{
+                            Toast.makeText(context, "Expense Adding failed. Please check your internet connection", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    public void getExpenses(String plantName){
+        Date today = Helper.getTodayDateObject();
+        firebaseFirestore.collection(Constants.EXPENSES)
+                .whereEqualTo(Constants.PLANT_NAME,plantName )
+                .whereEqualTo("year", today.getYear())
+                .whereEqualTo("month", today.getMonth())
+                .whereEqualTo("day",today.getDay())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            QuerySnapshot document = task.getResult();
+                            if (!document.isEmpty()) {
+                                onFirebaseRespond.onExpenseLoaded(
+                                        task.getResult().toObjects(Expense.class)
+                                );
+                            }else{
+                                onFirebaseRespond.onExpenseLoaded(
+                                        null
+                                );
+                            }
+
+                        }
+
                     }
                 });
     }
@@ -219,6 +270,8 @@ public class TaskFragmentRepository {
         void onTasksLoaded(List<Record> records);
 
         void onRecordAdded(Boolean result);
+
+        void onExpenseLoaded(List<Expense> expenses);
 
 
 

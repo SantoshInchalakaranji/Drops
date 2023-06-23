@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_investorHomeFragment_to_mainActivity2"
             app:destination="@id/mainActivity2" />
+        <action
+            android:id="@+id/action_investorHomeFragment_to_investorDailyInfoFragment"
+            app:destination="@id/investorDailyInfoFragment" />
     </fragment>
     <activity
         android:id="@+id/mainActivity2"
         android:name="com.prplmnstr.drops.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/investorDailyInfoFragment"
+        android:name="com.prplmnstr.drops.views.investor.InvestorDailyInfoFragment"
+        android:label="fragment_investor_daily_info"
+        tools:layout="@layout/fragment_investor_daily_info" />
 </navigation>

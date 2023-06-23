@@ -178,7 +178,9 @@ public class SignInFragment extends Fragment {
                             }
 
                         }else{
-
+                            binding.loginBtn.setText("Login");
+                            binding.loginBtn.setEnabled(true);
+                            binding.loginProgress.setVisibility(View.GONE);
                             Toast.makeText(context, "Worker account does not exist/Check your network", Toast.LENGTH_SHORT).show();
                         }
                     }

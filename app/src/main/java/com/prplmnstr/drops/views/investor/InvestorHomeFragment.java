@@ -16,6 +16,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -28,20 +29,28 @@ import android.widget.ArrayAdapter;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.prplmnstr.drops.MainActivity;
 import com.prplmnstr.drops.R;
 import com.prplmnstr.drops.adapters.AttendanceRvAdapter;
+import com.prplmnstr.drops.adapters.DashboardRecyclerAdapter;
 import com.prplmnstr.drops.databinding.AddPlantReportDialogBinding;
 import com.prplmnstr.drops.databinding.AddUnitDialogBinding;
 import com.prplmnstr.drops.databinding.CalenderDialogBinding;
 import com.prplmnstr.drops.databinding.FragmentDashboardBinding;
 import com.prplmnstr.drops.databinding.FragmentInvestorHomeBinding;
 import com.prplmnstr.drops.models.Attendance;
+import com.prplmnstr.drops.models.Expense;
 import com.prplmnstr.drops.models.Plant;
 import com.prplmnstr.drops.models.PlantReport;
 import com.prplmnstr.drops.models.Record;
+import com.prplmnstr.drops.models.RecyclerModel;
 import com.prplmnstr.drops.utils.Constants;
 import com.prplmnstr.drops.utils.Helper;
 import com.prplmnstr.drops.viewModel.DashboardViewModel;
@@ -66,19 +75,26 @@ public class InvestorHomeFragment extends Fragment implements NavController.OnDe
 
 
     private List<String> plants = new ArrayList<>();
-   
-   
-   
+
+
+    List<Expense> expenses = new ArrayList<>();
+    private RecyclerView expenseRV;
+    private List<RecyclerModel> expenseRecyclerItems = new ArrayList<>();
+    private DashboardRecyclerAdapter expenseAdapter;
+    private  int collection;
+    private int dayExpense = 0;
+
 
     // adding unit variables
     private String unitType, unitName;
     private int opening, waterOpening;
 
     private NavController navController;
-    private String PLANT_NAME;
+    public static String PLANT_NAME;
     private List<Record> todayRecords = new ArrayList<>();
     private List<Attendance> attendanceList = new ArrayList<>();
     private int noOfUits;
+
 
 
 
@@ -129,6 +145,7 @@ public class InvestorHomeFragment extends Fragment implements NavController.OnDe
 //                            editor.apply();
 
                             navController.navigate(R.id.action_investorHomeFragment_to_mainActivity2);
+                            getActivity().finish();
 //                            Intent intent = new Intent(getActivity(), MainActivity.class);
 //                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 //                            startActivity(intent);
@@ -138,6 +155,20 @@ public class InvestorHomeFragment extends Fragment implements NavController.OnDe
                 }
             });
 
+
+            binding.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    navController.navigate(R.id.action_investorHomeFragment_to_investorDailyInfoFragment);
+                }
+            });
+
+            binding.seeAllTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    navController.navigate(R.id.action_investorHomeFragment_to_investorDailyInfoFragment);
+                }
+            });
 
         }catch (Exception e){
             Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -162,21 +193,118 @@ public class InvestorHomeFragment extends Fragment implements NavController.OnDe
 
 
     private void loadUI() {
-        viewModel.getPlants().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
-            @Override
-            public void onChanged(List<String> plantList) {
-                if(plantList!=null){
-                    plants = plantList;
-                    set_spinner(plants);
-                }else{
-                    plantList.add("Chikodi");
-                    set_spinner(plants);
+//        viewModel.getPlants(Constants.INVESTOR).observe(getViewLifecycleOwner(), new Observer<List<String>>() {
+//            @Override
+//            public void onChanged(List<String> plantList) {
+//                if(plantList!=null  ){
+//                    plants = plantList;
+//                    set_spinner(plants);
+//                }else{
+//
+//                   loader.dismiss();
+//
+//                }
+//
+//            }
+//        });
 
+
+
+
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        String user = firebaseAuth.getCurrentUser().getEmail().toString();
+        List<String> plantsList = new ArrayList<>();
+        firebaseFirestore.collection(Constants.INVESTOR)
+                .whereEqualTo("email", user)
+                .get()
+
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            QuerySnapshot snapshot = task.getResult();
+                            if (snapshot.isEmpty()) {
+                                Toast.makeText(getContext(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                                loader.dismiss();
+                                return;
+                            }
+                            for (DocumentSnapshot document : task.getResult()) {
+                                // Retrieve the value of the desired field from the document
+                                String fieldValue = document.get("plantName").toString();
+
+                                // Add the field value to the list
+                                plantsList.add(fieldValue);
+
+
+
+                            }
+
+                            set_spinner(plantsList);
+
+                        } else {
+                            Toast.makeText(getContext(), "Unsuccessful", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+
+    }
+
+    private void loadExpenses(String plantName) {
+        // expense recycler
+        expenseRV = binding.expenseRV;
+        expenseRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+        expenseRV.setHasFixedSize(true);
+        expenseAdapter = new DashboardRecyclerAdapter();
+        expenseRV.setAdapter(expenseAdapter);
+        viewModel.getExpenses(plantName).observe(getViewLifecycleOwner(), new Observer<List<Expense>>() {
+            @Override
+            public void onChanged(List<Expense> expenseList) {
+                if (expenseList != null) {
+                    if (!expenseList.isEmpty()) {
+                        expenses = expenseList;
+                        String drawableName = "expense"; // Replace with the name of your drawable
+                        int expenseResourceId = getResources().getIdentifier(drawableName, "drawable", getContext().getPackageName());
+                        expenseRecyclerItems = viewModel.getRecycleItemsOfExpense(expenses, getResources(), expenseResourceId);
+
+                        expenseAdapter.setRecyclerItems(expenseRecyclerItems);
+                        viewModel.getSumOfExpenses().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+                            @Override
+                            public void onChanged(Integer sum) {
+
+                                binding.totalExpenseNumber.setText(String.valueOf(sum));
+                                dayExpense = sum;
+                                binding.inHandNumber.setText("₹" + String.valueOf(collection - sum));
+                            }
+                        });
+
+
+
+
+                    } else {
+                        expenseRecyclerItems.clear();
+                        expenseAdapter.setRecyclerItems(expenseRecyclerItems);
+
+                        binding.totalExpenseNumber.setText("0");
+                        binding.inHandNumber.setText(String.valueOf(collection));
+                    }
+                }else{
+                    expenseRecyclerItems.clear();
+                    expenseAdapter.setRecyclerItems(expenseRecyclerItems);
+
+                    binding.totalExpenseNumber.setText("0");
+                    binding.inHandNumber.setText(String.valueOf(collection));
                 }
 
+                loader.dismiss();
             }
         });
     }
+
+
     private void loadMonthlyReport(String plantName) {
 
         float scale = getResources().getDisplayMetrics().scaledDensity;
@@ -190,8 +318,18 @@ public class InvestorHomeFragment extends Fragment implements NavController.OnDe
                     float fontSizeInPixels= viewModel.calculateTextSize(map.get("waterSupply"));
                     binding.monthAmountNumber.setTextSize(fontSizeInPixels);
                     binding.monthWaterNumber.setTextSize(fontSizeInPixels);
-                    binding.monthAmountNumber.setText("₹"+map.get("sum"));
+                   // binding.monthAmountNumber.setText("₹"+map.get("sum"));
                     binding.monthWaterNumber.setText(map.get("waterSupply"));
+
+                    int monthSum = Integer.parseInt(map.get("sum"));
+
+                    viewModel.getMonthlyExpense(PLANT_NAME).observe(getViewLifecycleOwner(), new Observer<Integer>() {
+                        @Override
+                        public void onChanged(Integer expenses) {
+
+                            binding.monthAmountNumber.setText("₹ "+(monthSum-expenses));
+                        }
+                    });
                 }
             }
         });
@@ -204,7 +342,7 @@ public class InvestorHomeFragment extends Fragment implements NavController.OnDe
                 if(plantReport!= null){
                     binding.flowNumber.setText(String.valueOf(plantReport.getFlow()));
                     binding.tdsNumber.setText(String.valueOf(plantReport.getTds()));
-                    binding.pressureNumber.setText(plantReport.getPressure());
+                    binding.usageNumber.setText(String.valueOf(plantReport.getUsage()));
                     binding.plantReportDate.setText(Helper.getDateInStringFormat(
                             plantReport.getDay(), plantReport.getMonth(), plantReport.getYear()
                     ));
@@ -223,10 +361,10 @@ public class InvestorHomeFragment extends Fragment implements NavController.OnDe
                     binding.mainLayout.setVisibility(View.VISIBLE);
                     binding.noPlantsLayout.setVisibility(View.INVISIBLE);
                     load_blue_box();
-                  
+
                     loadPlantReport(PLANT_NAME);
                     loadMonthlyReport(PLANT_NAME);
-
+                    loadExpenses(PLANT_NAME);
 
                 }else{
                     binding.mainLayout.setVisibility(View.INVISIBLE);
@@ -254,6 +392,9 @@ public class InvestorHomeFragment extends Fragment implements NavController.OnDe
                         binding.percentageTV.setText(todayRecords.size()+"/"+ noOfUits);
                         Map<String ,Integer> map = viewModel.getBlueBoxDetails(recordList);
                         binding.totalAmountTV.setText("₹ "+map.get("sum"));
+                        binding.totalCashNumber.setText("₹"+map.get("sum"));
+                        collection = map.get("sum");
+                        binding.inHandNumber.setText("₹" + String.valueOf(collection - dayExpense));
                         binding.waterDispenseTV.setText("Water dispense(L) : "+map.get("waterSupply"));
                         loader.dismiss();
                     }
@@ -286,6 +427,7 @@ public class InvestorHomeFragment extends Fragment implements NavController.OnDe
                 loader.show();
                 PLANT_NAME= plants.get(i);
                 checkUnitSize(PLANT_NAME);
+
                 Toast.makeText(getActivity(), "Loading please wait...", Toast.LENGTH_LONG).show();
             }
 

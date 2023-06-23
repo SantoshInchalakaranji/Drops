@@ -5,6 +5,10 @@
     android:id="@+id/dialogContainer"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
 
 
     <LinearLayout
@@ -97,7 +101,6 @@
             android:layout_marginBottom="16dp" />
 
 
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/dialog_button"
             android:layout_width="match_parent"
@@ -110,4 +113,5 @@
             app:backgroundTint="@color/black" />
 
     </LinearLayout>
+</ScrollView>
 </LinearLayout>
