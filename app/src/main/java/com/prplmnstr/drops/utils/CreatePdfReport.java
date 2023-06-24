@@ -589,7 +589,7 @@ public class CreatePdfReport  {
 
 
 
-        String fileName = plantReport.getPlantName()+"_"+Helper.getTodayDateObject().getDateInStringFormat();
+        String fileName = plantReport.getPlantName()+"_"+recordDate.getDateInStringFormat();
         String stringFilePath = Environment.getExternalStorageDirectory().getPath() + "/Download/"+fileName+".pdf";
          File file = new File(stringFilePath);
 

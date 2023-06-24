@@ -254,7 +254,7 @@ public class DailyInfoFragment extends Fragment implements NavController.OnDesti
                         recordDate.setDay(day);
                         recordDate.setMonth(month+1);
                         recordDate.setYear(year);
-                        recordDate.setDateInStringFormat(Helper.getDateInStringFormat(day,month,year));
+                        recordDate.setDateInStringFormat(Helper.getDateInStringFormat(day,month+1,year));
                         binding.spinner.setText(recordDate.getDateInStringFormat());
 
 
