@@ -1,11 +1,8 @@
 package com.prplmnstr.drops.views.investor;
 
 import android.app.Dialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,33 +27,21 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.prplmnstr.drops.MainActivity;
 import com.prplmnstr.drops.R;
-import com.prplmnstr.drops.adapters.AttendanceRvAdapter;
 import com.prplmnstr.drops.adapters.DashboardRecyclerAdapter;
-import com.prplmnstr.drops.databinding.AddPlantReportDialogBinding;
-import com.prplmnstr.drops.databinding.AddUnitDialogBinding;
-import com.prplmnstr.drops.databinding.CalenderDialogBinding;
-import com.prplmnstr.drops.databinding.FragmentDashboardBinding;
 import com.prplmnstr.drops.databinding.FragmentInvestorHomeBinding;
 import com.prplmnstr.drops.models.Attendance;
 import com.prplmnstr.drops.models.Expense;
-import com.prplmnstr.drops.models.Plant;
 import com.prplmnstr.drops.models.PlantReport;
 import com.prplmnstr.drops.models.Record;
 import com.prplmnstr.drops.models.RecyclerModel;
 import com.prplmnstr.drops.utils.Constants;
 import com.prplmnstr.drops.utils.Helper;
-import com.prplmnstr.drops.viewModel.DashboardViewModel;
 import com.prplmnstr.drops.viewModel.investor.InvestorDashboardViewModel;
-import com.prplmnstr.drops.views.admin.DashboardFragment;
-import com.prplmnstr.drops.views.admin.DashboardFragmentArgs;
-import com.prplmnstr.drops.views.admin.DashboardFragmentDirections;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.prplmnstr.drops.views.SplashFragment"
+        android:name="com.prplmnstr.drops.views.authentication.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.prplmnstr.drops.views.SignInFragment"
+        android:name="com.prplmnstr.drops.views.authentication.SignInFragment"
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in" >
         <action

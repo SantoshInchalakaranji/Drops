@@ -1,4 +1,4 @@
-package com.prplmnstr.drops.repository;
+package com.prplmnstr.drops.repository.authentication;
 
 import android.app.Application;
 import android.widget.Toast;

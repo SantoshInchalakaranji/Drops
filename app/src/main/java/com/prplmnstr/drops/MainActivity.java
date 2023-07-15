@@ -4,9 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
@@ -17,10 +15,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.prplmnstr.drops.databinding.ActivityMainBinding;
-import com.prplmnstr.drops.utils.Constants;
-import com.prplmnstr.drops.viewModel.AuthViewModel;
 import com.prplmnstr.drops.viewModel.MainActivityViewModel;
 
 public class MainActivity extends AppCompatActivity {

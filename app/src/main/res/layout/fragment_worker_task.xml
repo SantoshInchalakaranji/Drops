@@ -244,7 +244,8 @@
 
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/dailyTV" />
+                app:layout_constraintTop_toBottomOf="@+id/dailyTV"
+                tools:listitem="@layout/dashboard_list_view_item" />
 
 
             <TextView

@@ -18,7 +18,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,7 +37,7 @@ import com.prplmnstr.drops.databinding.FragmentAddUserBinding;
 import com.prplmnstr.drops.models.RecyclerModel;
 import com.prplmnstr.drops.models.User;
 import com.prplmnstr.drops.utils.Constants;
-import com.prplmnstr.drops.viewModel.AddUserViewModel;
+import com.prplmnstr.drops.viewModel.admin.AddUserViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

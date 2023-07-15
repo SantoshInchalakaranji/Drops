@@ -1,6 +1,6 @@
 
 
-package com.prplmnstr.drops.views;
+package com.prplmnstr.drops.views.authentication;
 
         import android.content.Context;
         import android.content.SharedPreferences;
@@ -23,11 +23,10 @@ package com.prplmnstr.drops.views;
         import android.widget.Toast;
 
         import com.google.firebase.auth.FirebaseUser;
-        import com.prplmnstr.drops.MainActivity;
         import com.prplmnstr.drops.R;
         import com.prplmnstr.drops.databinding.FragmentSignInBinding;
         import com.prplmnstr.drops.utils.Constants;
-        import com.prplmnstr.drops.viewModel.AuthViewModel;
+        import com.prplmnstr.drops.viewModel.authentication.AuthViewModel;
 
         import java.io.File;
         import java.util.List;

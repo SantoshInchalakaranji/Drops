@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import com.prplmnstr.drops.R;
 import com.prplmnstr.drops.adapters.DashboardRecyclerAdapter;
-import com.prplmnstr.drops.databinding.FragmentDailyInfoBinding;
 import com.prplmnstr.drops.databinding.FragmentInvestorDailyInfoBinding;
 import com.prplmnstr.drops.databinding.ItemDetailsDialogBinding;
 import com.prplmnstr.drops.models.Date;
@@ -32,8 +31,7 @@ import com.prplmnstr.drops.models.Record;
 import com.prplmnstr.drops.models.RecyclerModel;
 import com.prplmnstr.drops.utils.CreatePdfReport;
 import com.prplmnstr.drops.utils.Helper;
-import com.prplmnstr.drops.viewModel.DailyInfoViewModel;
-import com.prplmnstr.drops.views.admin.DashboardFragment;
+import com.prplmnstr.drops.viewModel.admin.DailyInfoViewModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;

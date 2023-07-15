@@ -10,13 +10,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.InsetDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -28,16 +26,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -46,14 +39,11 @@ import com.prplmnstr.drops.R;
 
 import com.prplmnstr.drops.adapters.PlantsRecyclerAdapter;
 import com.prplmnstr.drops.databinding.AddPlantDialogBinding;
-import com.prplmnstr.drops.databinding.FragmentDashboardBinding;
 import com.prplmnstr.drops.databinding.FragmentHomeBinding;
 import com.prplmnstr.drops.models.Plant;
 import com.prplmnstr.drops.utils.Constants;
 import com.prplmnstr.drops.utils.Helper;
-import com.prplmnstr.drops.viewModel.AddUserViewModel;
-import com.prplmnstr.drops.viewModel.DashboardViewModel;
-import com.prplmnstr.drops.viewModel.HomeFragmentViewModel;
+import com.prplmnstr.drops.viewModel.admin.HomeFragmentViewModel;
 
 import java.io.InputStream;
 import java.util.ArrayList;

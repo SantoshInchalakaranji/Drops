@@ -365,9 +365,7 @@
                             android:gravity="center"
                             android:orientation="vertical"
 
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                           >
 
 
                             <TextView
@@ -391,9 +389,7 @@
 
                                 android:textColor="@color/white"
                                 android:textSize="18sp"
-                                app:layout_constraintEnd_toEndOf="@+id/flowTV"
-                                app:layout_constraintStart_toStartOf="@+id/flowTV"
-                                app:layout_constraintTop_toBottomOf="@+id/flowTV" />
+                                />
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
                         <androidx.appcompat.widget.LinearLayoutCompat
@@ -676,9 +672,7 @@
                             android:textColor="@color/white"
                             android:textSize="24sp"
 
-                            app:layout_constraintEnd_toEndOf="@+id/flowTV"
-                            app:layout_constraintStart_toStartOf="@+id/flowTV"
-                            app:layout_constraintTop_toBottomOf="@+id/flowTV" />
+                         />
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <ImageView
@@ -755,9 +749,7 @@
                             android:textColor="@color/white"
                             android:textSize="24sp"
 
-                            app:layout_constraintEnd_toEndOf="@+id/flowTV"
-                            app:layout_constraintStart_toStartOf="@+id/flowTV"
-                            app:layout_constraintTop_toBottomOf="@+id/flowTV" />
+                            />
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <ImageView

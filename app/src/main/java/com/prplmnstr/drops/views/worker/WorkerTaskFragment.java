@@ -1,10 +1,8 @@
 package com.prplmnstr.drops.views.worker;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -13,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +30,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -42,14 +38,11 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prplmnstr.drops.R;
 import com.prplmnstr.drops.adapters.AttendanceRvAdapter;
 import com.prplmnstr.drops.adapters.DashboardRecyclerAdapter;
-import com.prplmnstr.drops.adapters.PlantsRecyclerAdapter;
 import com.prplmnstr.drops.databinding.AddExpenseDialogBinding;
 import com.prplmnstr.drops.databinding.AddPlantReportDialogBinding;
 import com.prplmnstr.drops.databinding.AddRecordDialogBinding;
-import com.prplmnstr.drops.databinding.AddUnitDialogBinding;
 import com.prplmnstr.drops.databinding.AttendanceItemBinding;
 import com.prplmnstr.drops.databinding.CalenderDialogBinding;
-import com.prplmnstr.drops.databinding.FragmentDashboardBinding;
 import com.prplmnstr.drops.databinding.FragmentWorkerTaskBinding;
 import com.prplmnstr.drops.models.Attendance;
 import com.prplmnstr.drops.models.Date;
@@ -60,9 +53,8 @@ import com.prplmnstr.drops.models.RecyclerModel;
 import com.prplmnstr.drops.utils.Constants;
 import com.prplmnstr.drops.utils.CreatePdfReport;
 import com.prplmnstr.drops.utils.Helper;
-import com.prplmnstr.drops.viewModel.DashboardViewModel;
-import com.prplmnstr.drops.viewModel.TaskFragmentViewModel;
-import com.prplmnstr.drops.views.admin.DashboardFragmentDirections;
+import com.prplmnstr.drops.viewModel.admin.DashboardViewModel;
+import com.prplmnstr.drops.viewModel.worker.TaskFragmentViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,6 +95,8 @@ public class WorkerTaskFragment extends Fragment implements NavController.OnDest
     private String PLANT_NAME;
     private  PlantReport newPlantReport;
     List<Expense> expenses = new ArrayList<>();
+
+
 
 
     @Override
@@ -370,6 +364,8 @@ public class WorkerTaskFragment extends Fragment implements NavController.OnDest
             public void onChanged(Integer sum) {
                 binding.expenseNumber.setText(String.valueOf(sum));
                 binding.totalExpenseNumber.setText(String.valueOf(sum));
+                dayExpense = sum;
+                binding.inHandNumber.setText("₹" + String.valueOf(collection - sum));
             }
         });
 

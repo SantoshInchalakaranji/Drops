@@ -607,6 +607,7 @@ public class CreatePdfReport  {
         titlepaint.setTextSize(12);
         titlepaint.setTypeface(ResourcesCompat.getFont(context, R.font.segeo_regular));
 
+        
 
         Paint date = new Paint();
         date.setTextAlign(Paint.Align.CENTER);

@@ -1,4 +1,4 @@
-package com.prplmnstr.drops.viewModel;
+package com.prplmnstr.drops.viewModel.admin;
 
 import android.app.Application;
 import android.content.Context;

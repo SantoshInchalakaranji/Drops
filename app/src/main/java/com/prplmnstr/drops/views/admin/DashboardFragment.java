@@ -1,22 +1,16 @@
 package com.prplmnstr.drops.views.admin;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
+
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -29,55 +23,39 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
-import android.os.Handler;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prplmnstr.drops.MainActivity;
 
 import com.prplmnstr.drops.R;
 import com.prplmnstr.drops.adapters.AttendanceRvAdapter;
 import com.prplmnstr.drops.adapters.DashboardRecyclerAdapter;
-import com.prplmnstr.drops.databinding.AddPlantDialogBinding;
 import com.prplmnstr.drops.databinding.AddPlantReportDialogBinding;
 import com.prplmnstr.drops.databinding.AddUnitDialogBinding;
 import com.prplmnstr.drops.databinding.AttendanceItemBinding;
 import com.prplmnstr.drops.databinding.CalenderDialogBinding;
-import com.prplmnstr.drops.databinding.DashboardListViewItemBinding;
 import com.prplmnstr.drops.databinding.FragmentDashboardBinding;
-import com.prplmnstr.drops.databinding.FragmentSignInBinding;
 import com.prplmnstr.drops.models.Attendance;
-import com.prplmnstr.drops.models.Date;
 import com.prplmnstr.drops.models.Expense;
-import com.prplmnstr.drops.models.Plant;
 import com.prplmnstr.drops.models.PlantReport;
 import com.prplmnstr.drops.models.Record;
 import com.prplmnstr.drops.models.RecyclerModel;
 import com.prplmnstr.drops.utils.Constants;
 import com.prplmnstr.drops.utils.CreatePdfReport;
 import com.prplmnstr.drops.utils.Helper;
-import com.prplmnstr.drops.viewModel.AuthViewModel;
-import com.prplmnstr.drops.viewModel.DashboardViewModel;
+import com.prplmnstr.drops.viewModel.admin.DashboardViewModel;
 
-import java.text.DateFormatSymbols;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 
 public class DashboardFragment extends Fragment implements NavController.OnDestinationChangedListener, BottomNavigationView.OnNavigationItemSelectedListener {

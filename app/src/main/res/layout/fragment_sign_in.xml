@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
     android:background="@color/background"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context=".views.SignInFragment">
+        tools:context=".views.authentication.SignInFragment">
 
         <TextView
             android:id="@+id/resisterTV"

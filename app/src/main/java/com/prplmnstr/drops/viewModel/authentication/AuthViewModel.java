@@ -1,4 +1,4 @@
-package com.prplmnstr.drops.viewModel;
+package com.prplmnstr.drops.viewModel.authentication;
 
 import android.app.Application;
 
@@ -7,8 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.prplmnstr.drops.models.Plant;
-import com.prplmnstr.drops.repository.AuthRepository;
+import com.prplmnstr.drops.repository.authentication.AuthRepository;
 
 import java.util.List;
 

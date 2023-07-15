@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.prplmnstr.drops.repository.AuthRepository;
+import com.prplmnstr.drops.repository.authentication.AuthRepository;
 
 import java.util.List;
 

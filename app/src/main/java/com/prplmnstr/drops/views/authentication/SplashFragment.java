@@ -1,4 +1,4 @@
-package com.prplmnstr.drops.views;
+package com.prplmnstr.drops.views.authentication;
 
         import android.content.Context;
         import android.content.SharedPreferences;
@@ -18,10 +18,9 @@ package com.prplmnstr.drops.views;
         import android.view.ViewGroup;
         import android.widget.Toast;
 
-        import com.google.firebase.auth.FirebaseAuth;
         import com.prplmnstr.drops.R;
         import com.prplmnstr.drops.utils.Constants;
-        import com.prplmnstr.drops.viewModel.AuthViewModel;
+        import com.prplmnstr.drops.viewModel.authentication.AuthViewModel;
 
 public class SplashFragment extends Fragment {
 
