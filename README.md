@@ -1,32 +1,60 @@
-# Currency Converter
-**Currency Converter** is application which fetches the realtime currency values from API and converts the desired currency of the user.
+# Drops - Water Dispensing Outlet Manager
 
-<img src="https://github.com/AdityaShidlyali/CurrencyConverterApp/blob/main/images/currency_converter.jpg" />
+Drops is an Android application that simplifies the management of water dispensing outlets. It allows users to efficiently keep track of water dispensers, monitor their usag, and maintain records for better management. The app is designed to enhance the process of water dispensing services and is developed using Android Studio with Firebase as the data storage solution. The project was created as a freelance assignment for the client, NeerAmrit Pvt. Ltd.
 
 ## Features
-* User can enter the desired conversion fromats.
-* Conversion can be done accross 170+ currencies as specified by the API.
-* Material design guidelines followed to increase the user experience.
 
-## Project structure (MVVM)
-* di
-* helper
-* models
-* network
-* repositories
-* view
-* viewmodels
+- **Water Dispenser Records:** Add, view, edit, and delete records for each water dispenser outlet.
+- **Made for three users.** Admin, worker, investor.
+- **Admin:** can create worker credential for different plants. Can monitor daily records and worker attendance and much more.
+- **Worker:** Add, update daily records.
+- **Generate pdf report:** Generates an pdf file for daily record.
+- **MVVM Architecture:** The application follows the MVVM (Model-View-ViewModel) architectural pattern for maintainability and separation of concerns.
+- **Firebase Integration:** Utilizes Firebase as the backend to store and retrieve data securely.
 
-<img src="https://github.com/AdityaShidlyali/CurrencyConverterApp/blob/main/images/mvvm.png" />
+## Screenshots
 
-## Android :heart: Koltin
-* Retrofit is used with ScalarConverters to get the JSON response as the string.
-* Default repository pattern is used for effective error handling and ease of testing by providing mock repositories.
-* Hilt framework is used for dependency injection.
+*(Insert some screenshots of the app here to give an overview of the user interface.)*
 
-## Tech stack used
-- [Retrofit 2](https://square.github.io/retrofit/) - REST client for making network calls.
-- [Coroutines](https://developer.android.com/kotlin/coroutines) - For asynchronous operations.
-- [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) - Lifecycle aware library to manage data observing the lifecycle of licecycle owner.
-- [Hilt-Dagger](https://dagger.dev/hilt/) - Recommended Dependency Injection Framework for Android.
-- [Kotlin Flows](https://developer.android.com/kotlin/flow) - Emits sequence of values or data, and consumer asynchronously consumes these values or data.
+## Installation
+
+To use the Drops application, follow these steps:
+
+1. Clone the repository to your local machine using the following command:
+   ```
+   git clone https://github.com//Drops.git
+   ```
+
+2. Open the project in Android Studio.
+
+3. Connect the app to your Firebase project by following the Firebase setup guide.
+
+4. Build and run the app on an Android emulator or a physical device.
+
+## Requirements
+
+- Android Studio 4.0 or above
+- Android SDK 21 or above
+- Google Play services
+- Firebase project
+
+## Technologies Used
+
+- Android SDK
+- Java
+- Firebase Firestore Database
+- Firebase Authentication
+- Google Play services
+
+## Getting Involved
+
+If you would like to contribute to the project, feel free to fork the repository and submit pull requests. Bug reports, feature requests, and suggestions are also welcome through GitHub issues.
+
+
+
+## Contact
+
+For any inquiries or collaboration opportunities, please reach out to NeerAmrit Pvt. Ltd. at:
+
+- Website: [https://www.neeramrit.com]([https://www.neeramrit.com](https://www.zaubacorp.com/company/NEER-AMRIT-ENTERPRISES-LLP/AAY-2588))
+
