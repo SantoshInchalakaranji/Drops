@@ -22,7 +22,7 @@ To use the Drops application, follow these steps:
 
 1. Clone the repository to your local machine using the following command:
    ```
-   git clone https://github.com//Drops.git
+   git clone https://github.com/SantoshInchalakaranji/Drops.git
    ```
 
 2. Open the project in Android Studio.
@@ -54,7 +54,8 @@ If you would like to contribute to the project, feel free to fork the repository
 
 ## Contact
 
-For any inquiries or collaboration opportunities, please reach out to NeerAmrit Pvt. Ltd. at:
+For any inquiries or collaboration opportunities, please reach out :
 
-- Website: [https://www.neeramrit.com]([https://www.neeramrit.com](https://www.zaubacorp.com/company/NEER-AMRIT-ENTERPRISES-LLP/AAY-2588))
+- Mail: santoshinchalakaranji@gmail.com
+- Phone/Whatsapp: +91 8904901553 
 
