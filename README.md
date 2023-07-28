@@ -14,7 +14,7 @@ Drops is an Android application that simplifies the management of water dispensi
 
 ## Screenshots
 
-*(Insert some screenshots of the app here to give an overview of the user interface.)*
+<img src="https://github.com/SantoshInchalakaranji/Drops/blob/master/images/Web%201920%20%E2%80%93%201.png" />
 
 ## Installation
 
