@@ -59,7 +59,9 @@ To use the Drops application, follow these steps:
 
 ## Demo Video
 
- https://drive.google.com/file/d/1WG8Jzr32ZQEpWlwlwnmECT2O9ONWy4Pw/view?usp=drive_link
+[![Demo Video](https://png.pngtree.com/png-vector/20190724/ourmid/pngtree-vector-play-icon-png-image_1572584.jpg)](https://drive.google.com/file/d/1WG8Jzr32ZQEpWlwlwnmECT2O9ONWy4Pw/view?usp=drive_link)
+
+ 
 
 ## Getting Involved
 
