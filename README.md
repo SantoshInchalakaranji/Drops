@@ -16,6 +16,17 @@ Drops is an Android application that simplifies the management of water dispensi
 
 <img src="https://github.com/SantoshInchalakaranji/Drops/blob/master/images/Web%201920%20%E2%80%93%201.png" />
 
+## Project structure (MVVM)
+* adapters
+* models
+* repository
+* utils
+* viewModel
+* views
+* MainActivity
+
+ <img src="https://github.com/SantoshInchalakaranji/Drops/blob/master/images/firebase_with_mvvm.png" /> 
+
 ## Installation
 
 To use the Drops application, follow these steps:
