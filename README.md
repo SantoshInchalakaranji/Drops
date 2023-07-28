@@ -57,6 +57,10 @@ To use the Drops application, follow these steps:
 - Firebase Authentication
 - Google Play services
 
+## Demo Video
+
+ https://drive.google.com/file/d/1WG8Jzr32ZQEpWlwlwnmECT2O9ONWy4Pw/view?usp=drive_link
+
 ## Getting Involved
 
 If you would like to contribute to the project, feel free to fork the repository and submit pull requests. Bug reports, feature requests, and suggestions are also welcome through GitHub issues.
