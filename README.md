@@ -1,6 +1,6 @@
 # Drops - Water Dispensing Outlet Manager
 
-Drops is an Android application that simplifies the management of water dispensing outlets. It allows users to efficiently keep track of water dispensers, monitor their usag, and maintain records for better management. The app is designed to enhance the process of water dispensing services and is developed using Android Studio with Firebase as the data storage solution. The project was created as a freelance assignment for the client, NeerAmrit Pvt. Ltd.
+Drops is an Android application that simplifies the management of water dispensing outlets. It allows users to efficiently keep track of water dispensers, monitor their usage, and maintain records for better management. The app is designed to enhance the process of water dispensing services and is developed using Android Studio with Firebase as the data storage solution. The project was created for VrishankSoft as an open source project for the client, NeerAmrit Pvt. Ltd.
 
 ## Features
 
